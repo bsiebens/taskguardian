@@ -109,7 +109,9 @@
                                         {:else if props.sort.order === "desc"}
                                             <IconArrowDown class="ml-1" />
                                         {:else if ["Project", "Priority", "Due", "Wait", "Urgency"].includes(cell.label)}
-                                            <IconArrowsSort class="text-surface-300 ml-1" />
+                                            <IconArrowsSort
+                                                class="text-surface-300 hover:text-surface-600 dark:text-surface-500 hover:dark:text-surface-200 ml-1"
+                                            />
                                         {/if}
                                     </div>
                                 </th>
