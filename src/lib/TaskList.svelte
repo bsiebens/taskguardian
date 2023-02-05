@@ -5,8 +5,9 @@
     import { tasks } from "./stores";
     import TaskIcons from './TaskIcons.svelte';
     import TaskDescription from './TaskDescription.svelte';
+    import TaskActions from './TaskActions.svelte';
     import { convertTaskwarriorDateToISO8601Format } from "./utilities";
-    import { IconArrowsSort, IconArrowUp, IconArrowDown } from '@tabler/icons-svelte';
+    import { IconArrowsSort, IconArrowUp, IconArrowDown, IconPencil, IconCheck, IconTrash } from '@tabler/icons-svelte';
 
     const priorityMapping = {
         undefined: 0,
@@ -82,6 +83,11 @@
             header: 'Urgency',
             accessor: 'urgency',
         }),
+        table.display({
+            id: 'actions',
+            header: '',
+            cell: ({ row }) => createRender(TaskActions, { item: row.original }),
+        })
     ]);
     
     const { headerRows, rows, tableAttrs, tableBodyAttrs } = table.createViewModel(columns);

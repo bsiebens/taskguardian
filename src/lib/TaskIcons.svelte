@@ -50,6 +50,8 @@
             <IconAlertTriangle class='text-warning-500' />
         {/if}
 
-        <!-- {itemBlocked(item, $pendingTasks)} -->
+        <!-- {#if itemBlocked(item, $pendingTasks)}
+            <IconLock class='text-tertiary-500' />
+        {/if} -->
     {/if}
 </div>
