@@ -1,7 +1,18 @@
 <script>
     import { IconPencil, IconCheck, IconTrash, IconArrowBackUp, IconTrashOff } from "@tabler/icons-svelte";
+    import { TaskwarriorLib } from "taskwarrior-lib";
 
     export let item;
+    const taskwarrior = new TaskwarriorLib();
+
+    function markCompleted(item) {
+        item.status = "completed";
+        console.log(taskwarrior.update([item]));
+    }
+
+    function markNotCompleted(item) {}
+
+    function markDeleted(item) {}
 </script>
 
 <div class="flex flex-row gap-x-2">
@@ -12,7 +23,7 @@
         <IconTrashOff />
     {:else}
         <IconPencil />
-        <IconCheck />
+        <button on:click={() => markCompleted(item)}><IconCheck /></button>
         <IconTrash />
     {/if}
 </div>
