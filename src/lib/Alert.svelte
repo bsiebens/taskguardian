@@ -33,7 +33,7 @@
         </div>
     </div>
     <div class='flex-none'>
-        <button class='btn btn-sm btn-square' on:click={ handleButtonClick }>
+        <button class='btn btn-sm btn-square btn-ghost' on:click={ handleButtonClick }>
             <i class='fa-solid fa-times' />
         </button>
     </div>

@@ -6,7 +6,6 @@
     const { addNotification } = getNotificationsContext()
 
     export let data
-    export let form
 </script>
 
 <h1>Tasks</h1>
@@ -25,10 +24,6 @@
 }}>
     <button class='btn' type='submit'>sync</button>
 </form>
-
-{#if form?.type}
-    {form.type} // {form.message}
-{/if}
 
 <ul>
     {#each data.tasks.next as task}
