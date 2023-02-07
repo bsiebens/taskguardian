@@ -1,11 +1,13 @@
 <script>
-    import { onMount } from 'svelte';
-    import { themeChange } from 'theme-change';
+    import { onMount } from 'svelte'
+    import { themeChange } from 'theme-change'
+    import Notifications from 'svelte-notifications'
+    import Alert from '../lib/Alert.svelte';
 
-    import '../app.css';
+    import '../app.css'
 
     onMount(() => {
-        themeChange(false);
+        themeChange(false)
     });
 </script>
 
@@ -25,11 +27,13 @@
     </div>
 </div>
 
-<div class='container mx-auto my-16'>
-    <div class='prose max-w-none'>
-        <slot />
+<Notifications item={Alert}>
+    <div class='container mx-auto my-16'>
+        <div class='prose max-w-none'>
+            <slot />
+        </div>
     </div>
-</div>
+</Notifications>
 
 <footer class='footer footer-center p-4 bg-base-300 text-base-content'>
     <div>
