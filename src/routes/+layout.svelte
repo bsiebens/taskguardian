@@ -26,11 +26,13 @@
 </div>
 
 <div class='container mx-auto my-16'>
-    <slot />
+    <div class='prose max-w-none'>
+        <slot />
+    </div>
 </div>
 
 <footer class='footer footer-center p-4 bg-base-300 text-base-content'>
     <div>
-        <p>created by bernard siebens <a href='https://github.com/bsiebens/taskguardian' class='hover:text-secondary'><i class='fa-brands fa-github ml-2'></i></a></p>
+        <p>created by bernard siebens <a href='https://github.com/bsiebens/taskguardian' class='hover:text-secondary'><i class='fa-brands fa-github ml-2' /></a></p>
     </div>
 </footer>

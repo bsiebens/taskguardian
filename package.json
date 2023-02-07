@@ -33,6 +33,7 @@
 	"type": "module",
 	"dependencies": {
 		"daisyui": "^2.50.0",
+		"taskwarrior-lib": "^0.5.2",
 		"theme-change": "^2.3.0"
 	}
 }

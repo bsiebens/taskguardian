@@ -1,7 +1,20 @@
-<article class='prose max-w-none'>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nunc platea nibh at mollis dui laoreet finibus quisque placerat malesuada. Ornare sem finibus nam ut vehicula scelerisque arcu ultricies nam primis et ultrices. Dignissim elit auctor condimentum finibus rhoncus lacinia blandit suscipit consectetur.</p>
-<p>Vel luctus eros per nisi sed duis donec volutpat orci suscipit imperdiet pellentesque litora praesent lacinia. Pulvinar sociosqu imperdiet est in aliquet class tempus per sed consequat tincidunt proin turpis orci ultricies. Cubilia tortor nam congue enim taciti enim elementum augue mattis lacus condimentum posuere.</p>
-<p>Ullamcorper per velit egestas nostra nisl cubilia elementum accumsan. Fusce eros nunc aptent lobortis netus cursus torquent metus. Cursus eros velit consectetur ipsum erat erat sagittis non pulvinar accumsan auctor turpis varius.</p>
-<p>Nisi per feugiat commodo nibh dapibus fames volutpat ultricies. Rutrum mattis vel diam hendrerit hendrerit phasellus vestibulum at elit. Velit diam blandit sodales per velit netus vel. Quis nulla diam odio arcu phasellus rutrum ullamcorper nam.</p>
-<p>Potenti dapibus eleifend lacinia feugiat pulvinar posuere imperdiet cursus bibendum vulputate tellus vestibulum in varius. Adipiscing dictumst odio proin taciti consequat congue ipsum inceptos purus rhoncus vestibulum nulla dolor mauris hac. Auctor interdum ornare praesent faucibus semper libero fringilla euismod pulvinar ligula. Orci platea feugiat fermentum class ipsum amet cras sagittis. Etiam at risus ligula tempor litora.</p>
-</article>
+<script>
+    export let data
+    export let form
+</script>
+
+<h1>Tasks</h1>
+
+<form method='post' action='?/sync'>
+    <button class='btn' type='submit'>sync</button>
+</form>
+
+{#if form?.type}
+    {form.type} // {form.message}
+{/if}
+
+<ul>
+    {#each data.tasks.next as task}
+        <li>{ task.description }</li>
+    {/each}
+</ul>
