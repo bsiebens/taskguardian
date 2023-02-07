@@ -19,7 +19,7 @@
 		</div>
 	</div>
 	<div class="mr-32 flex-none gap-4">
-		<label class="swap swap-rotate">
+		<label class="swap-rotate swap">
 			<input data-toggle-theme="halloween,emerald" data-act-class="active" type="checkbox" id="darkMode" />
 			<i class="fa-solid fa-sun swap-off h-6 w-6 fill-current" />
 			<i class="fa-solid fa-moon swap-on h-6 w-6 fill-current" />

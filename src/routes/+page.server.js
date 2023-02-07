@@ -13,19 +13,21 @@ export function load() {
         tasks: {
             all: tasks,
             pending: pendingTasks,
-            next: tasks.filter(function(task) {
+            next: tasks.filter(function (task) {
                 if (task.status != 'pending') return false
                 if (task.wait === undefined) return true
+                // @ts-ignore
                 return new Date(convertTaskwarriorDateToISO8601Format(task.wait)) <= new Date()
             }),
-            later: tasks.filter(function(task) {
+            later: tasks.filter(function (task) {
                 if (task.status != 'pending') return false
                 if (task.wait === undefined) return false
+                // @ts-ignore
                 return new Date(convertTaskwarriorDateToISO8601Format(task.wait)) > new Date()
             }),
-            recurring: tasks.filter(function(task) { return task.status === 'recurring' }),
-            completed: tasks.filter(function(task) { return task.status === 'completed' }),
-            deleted: tasks.filter(function(task) { return task.status === 'deleted' })
+            recurring: tasks.filter(function (task) { return task.status === 'recurring' }),
+            completed: tasks.filter(function (task) { return task.status === 'completed' }),
+            deleted: tasks.filter(function (task) { return task.status === 'deleted' })
         }
     }
 }
