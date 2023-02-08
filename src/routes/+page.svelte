@@ -1,6 +1,4 @@
 <script>
-	import { enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
 	import { getNotificationsContext } from 'svelte-notifications';
 	import { activeTab } from '../lib/stores';
 
@@ -14,7 +12,7 @@
 
 {$activeTab}
 
-<form
+<!-- <form
 	method="post"
 	action="?/sync"
 	use:enhance={({ form, data, action, cancel }) => {
@@ -33,7 +31,7 @@
 	}}
 >
 	<button class="btn" type="submit">sync</button>
-</form>
+</form> -->
 
 <ul>
 	{#each data.tasks.next as task}

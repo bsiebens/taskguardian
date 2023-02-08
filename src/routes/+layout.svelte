@@ -1,10 +1,16 @@
 <script>
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
+	import { enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 	import Notifications from 'svelte-notifications';
 	import Alert from '../lib/Alert.svelte';
 	import TabButton from '../lib/TabButton.svelte';
+	import SyncButton from '../lib/SyncButton.svelte';
 	import '../app.css';
+	import { getNotificationsContext } from 'svelte-notifications';
+
+	const notificationsContext = getNotificationsContext();
 
 	onMount(() => {
 		themeChange(false);
@@ -46,9 +52,7 @@
 
 			<div class="mx-auto mb-4 flex lg:mx-0 lg:mb-0 lg:ml-4">
 				<div class="flex flex-row gap-x-2">
-					<button class="btn-secondary btn w-24">
-						<i class="fa-solid fa-refresh mr-2" />sync
-					</button>
+					<SyncButton />
 					<button class="btn-primary btn w-24">
 						<i class="fa-solid fa-plus mr-2" />add
 					</button>
