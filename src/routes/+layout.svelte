@@ -35,49 +35,24 @@
 
 		<div class="flex flex-col items-center lg:flex-row">
 			<div class="mb-4 flex-auto lg:mb-0">
-				<!-- <div class='flex flex-col gap-y-1 lg:flex-row lg:gap-x-2'>
-					<button class='btn'>Button 1</button>
-					<button class='btn'>Button 2</button>
-					<button class='btn'>Button 3</button>
-					<button class='btn'>Button 4</button>
-				</div> -->
-				<div class="tabs tabs-boxed justify-center lg:justify-start">
+				<div class="tabs justify-center lg:justify-start">
 					<TabButton tabName={'next'} />
 					<TabButton tabName={'later'} />
 					<TabButton tabName={'recurring'} />
 					<TabButton tabName={'completed'} />
 					<TabButton tabName={'deleted'} />
-
-					<!-- <a class='tab tab-active'>
-						<i class='fa-solid fa-play mr-2' />
-						<span class='uppercase'>next</span>
-					</a>
-					<a class='tab'>
-						<i class='fa-solid fa-clock mr-2' />
-						<span class='uppercase'>later</span>
-					</a>
-					<a class='tab'>
-						<i class='fa-solid fa-repeat mr-2' />
-						<span class='uppercase'>recurring</span>
-					</a>
-					<a class='tab'>
-						<i class='fa-solid fa-square-check mr-2' />
-						<span class='uppercase'>completed</span>
-					</a>
-					<a class='tab'>
-						<i class='fa-solid fa-trash mr-2' />
-						<span class='uppercase'>deleted</span>
-					</a> -->
 				</div>
 			</div>
 
-			<div class="mx-auto mb-4 flex gap-x-2 lg:mx-0 lg:mb-0 lg:ml-4">
-				<button class="btn-secondary btn">
-					<i class="fa-solid fa-refresh mr-2" />sync
-				</button>
-				<button class="btn-primary btn">
-					<i class="fa-solid fa-plus mr-2" />add
-				</button>
+			<div class="mx-auto mb-4 flex lg:mx-0 lg:mb-0 lg:ml-4">
+				<div class="flex flex-row gap-x-2">
+					<button class="btn-secondary btn w-24">
+						<i class="fa-solid fa-refresh mr-2" />sync
+					</button>
+					<button class="btn-primary btn w-24">
+						<i class="fa-solid fa-plus mr-2" />add
+					</button>
+				</div>
 			</div>
 		</div>
 

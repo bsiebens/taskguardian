@@ -12,7 +12,7 @@
 </script>
 
 {#if $activeTab === tabName}
-	<a class="tab tab-active" href="/" on:click={setActiveTab}>
+	<a class="tab tab-active grow lg:tab-bordered" href="/" on:click={setActiveTab}>
 		{#if tabName === 'next'}
 			<i class="fa-solid fa-play mr-2" />
 		{:else if tabName === 'later'}
@@ -29,7 +29,7 @@
 		<span class="uppercase">{tabName}</span>
 	</a>
 {:else}
-	<a class="tab" href="/" on:click={setActiveTab}>
+	<a class="tab grow lg:tab-bordered" href="/" on:click={setActiveTab}>
 		{#if tabName === 'next'}
 			<i class="fa-solid fa-play mr-2" />
 		{:else if tabName === 'later'}
