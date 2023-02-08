@@ -13,12 +13,12 @@
 
 <div class="navbar bg-neutral text-neutral-content">
 	<div class="flex-1">
-		<div class="lg:ml-16 ml-2 text-2xl font-semibold normal-case">
+		<div class="ml-2 text-2xl font-semibold normal-case lg:ml-16">
 			<i class="fa-solid fa-shield-dog" />
 			TaskGuardian
 		</div>
 	</div>
-	<div class="lg:mr-32 mr-2 flex-none gap-4">
+	<div class="mr-2 flex-none gap-4 lg:mr-32">
 		<label class="swap-rotate swap">
 			<input data-toggle-theme="halloween,emerald" data-act-class="active" type="checkbox" id="darkMode" />
 			<i class="fa-solid fa-sun swap-off h-6 w-6 fill-current" />
@@ -29,19 +29,19 @@
 
 <Notifications item={Alert}>
 	<div class="container mx-auto my-16 px-2 lg:px-0">
-		<div class='prose mb-4'>
+		<div class="prose mb-4">
 			<h1>Tasks</h1>
 		</div>
-	
-		<div class='flex flex-col lg:flex-row items-center'>
-			<div class='flex-auto mb-4 lg:mb-0'>
+
+		<div class="flex flex-col items-center lg:flex-row">
+			<div class="mb-4 flex-auto lg:mb-0">
 				<!-- <div class='flex flex-col gap-y-1 lg:flex-row lg:gap-x-2'>
 					<button class='btn'>Button 1</button>
 					<button class='btn'>Button 2</button>
 					<button class='btn'>Button 3</button>
 					<button class='btn'>Button 4</button>
 				</div> -->
-				<div class='tabs tabs-boxed justify-center lg:justify-start'>
+				<div class="tabs tabs-boxed justify-center lg:justify-start">
 					<TabButton tabName={'next'} />
 					<TabButton tabName={'later'} />
 					<TabButton tabName={'recurring'} />
@@ -70,13 +70,13 @@
 					</a> -->
 				</div>
 			</div>
-		
-			<div class='flex mb-4 mx-auto lg:mb-0 lg:mx-0 lg:ml-4 gap-x-2'>
-				<button class='btn btn-secondary'>
-					<i class='fa-solid fa-refresh mr-2' />sync
+
+			<div class="mx-auto mb-4 flex gap-x-2 lg:mx-0 lg:mb-0 lg:ml-4">
+				<button class="btn-secondary btn">
+					<i class="fa-solid fa-refresh mr-2" />sync
 				</button>
-				<button class='btn btn-primary'>
-					<i class='fa-solid fa-plus mr-2' />add
+				<button class="btn-primary btn">
+					<i class="fa-solid fa-plus mr-2" />add
 				</button>
 			</div>
 		</div>

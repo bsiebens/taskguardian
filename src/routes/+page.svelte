@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import { getNotificationsContext } from 'svelte-notifications';
-    import { activeTab } from '../lib/stores';
+	import { activeTab } from '../lib/stores';
 
 	const { addNotification } = getNotificationsContext();
 
