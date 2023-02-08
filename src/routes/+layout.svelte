@@ -1,16 +1,12 @@
 <script>
+	import FormModal from '$lib/FormModal.svelte';
 	import { onMount } from 'svelte';
-	import { themeChange } from 'theme-change';
-	import { enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
 	import Notifications from 'svelte-notifications';
-	import Alert from '../lib/Alert.svelte';
-	import TabButton from '../lib/TabButton.svelte';
-	import SyncButton from '../lib/SyncButton.svelte';
+	import { themeChange } from 'theme-change';
 	import '../app.css';
-	import { getNotificationsContext } from 'svelte-notifications';
-
-	const notificationsContext = getNotificationsContext();
+	import Alert from '../lib/Alert.svelte';
+	import SyncButton from '../lib/SyncButton.svelte';
+	import TabButton from '../lib/TabButton.svelte';
 
 	onMount(() => {
 		themeChange(false);
@@ -64,6 +60,8 @@
 			<slot />
 		</div>
 	</div>
+
+	<FormModal id="add" />
 </Notifications>
 
 <footer class="footer footer-center bg-base-300 p-4 text-base-content">

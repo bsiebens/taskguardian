@@ -12,6 +12,8 @@
 
 {$activeTab}
 
+<label for="add" class="btn">open modal</label>
+
 <!-- <form
 	method="post"
 	action="?/sync"
