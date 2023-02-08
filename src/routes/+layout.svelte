@@ -13,12 +13,12 @@
 
 <div class="navbar bg-neutral text-neutral-content">
 	<div class="flex-1">
-		<div class="ml-16 text-2xl font-semibold normal-case">
+		<div class="lg:ml-16 ml-2 text-2xl font-semibold normal-case">
 			<i class="fa-solid fa-shield-dog" />
 			TaskGuardian
 		</div>
 	</div>
-	<div class="mr-32 flex-none gap-4">
+	<div class="lg:mr-32 mr-2 flex-none gap-4">
 		<label class="swap-rotate swap">
 			<input data-toggle-theme="halloween,emerald" data-act-class="active" type="checkbox" id="darkMode" />
 			<i class="fa-solid fa-sun swap-off h-6 w-6 fill-current" />
@@ -28,7 +28,53 @@
 </div>
 
 <Notifications item={Alert}>
-	<div class="container mx-auto my-16">
+	<div class="container mx-auto my-16 px-2 lg:px-0">
+		<div class='prose mb-4'>
+			<h1>Tasks</h1>
+		</div>
+	
+		<div class='flex flex-col lg:flex-row items-center'>
+			<div class='flex-auto mb-4 lg:mb-0'>
+				<!-- <div class='flex flex-col gap-y-1 lg:flex-row lg:gap-x-2'>
+					<button class='btn'>Button 1</button>
+					<button class='btn'>Button 2</button>
+					<button class='btn'>Button 3</button>
+					<button class='btn'>Button 4</button>
+				</div> -->
+				<div class='tabs tabs-boxed justify-center lg:justify-start'>
+					<a class='tab tab-active'>
+						<i class='fa-solid fa-play mr-2' />
+						<span class='uppercase'>next</span>
+					</a>
+					<a class='tab'>
+						<i class='fa-solid fa-clock mr-2' />
+						<span class='uppercase'>later</span>
+					</a>
+					<a class='tab'>
+						<i class='fa-solid fa-repeat mr-2' />
+						<span class='uppercase'>recurring</span>
+					</a>
+					<a class='tab'>
+						<i class='fa-solid fa-square-check mr-2' />
+						<span class='uppercase'>completed</span>
+					</a>
+					<a class='tab'>
+						<i class='fa-solid fa-trash mr-2' />
+						<span class='uppercase'>deleted</span>
+					</a>
+				</div>
+			</div>
+		
+			<div class='flex mb-4 mx-auto lg:mb-0 lg:mx-0 lg:ml-4 gap-x-2'>
+				<button class='btn btn-secondary'>
+					<i class='fa-solid fa-refresh mr-2' />sync
+				</button>
+				<button class='btn btn-primary'>
+					<i class='fa-solid fa-plus mr-2' />add
+				</button>
+			</div>
+		</div>
+
 		<div class="prose max-w-none">
 			<slot />
 		</div>

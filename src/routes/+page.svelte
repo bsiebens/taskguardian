@@ -11,8 +11,6 @@
 	export let data;
 </script>
 
-<h1>Tasks</h1>
-
 <form
 	method="post"
 	action="?/sync"
