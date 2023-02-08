@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import { getNotificationsContext } from 'svelte-notifications';
+    import { activeTab } from '../lib/stores';
 
 	const { addNotification } = getNotificationsContext();
 
@@ -10,6 +11,8 @@
 	 */
 	export let data;
 </script>
+
+{$activeTab}
 
 <form
 	method="post"

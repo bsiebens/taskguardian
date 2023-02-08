@@ -3,7 +3,7 @@
 	import { themeChange } from 'theme-change';
 	import Notifications from 'svelte-notifications';
 	import Alert from '../lib/Alert.svelte';
-
+	import TabButton from '../lib/TabButton.svelte';
 	import '../app.css';
 
 	onMount(() => {
@@ -42,7 +42,13 @@
 					<button class='btn'>Button 4</button>
 				</div> -->
 				<div class='tabs tabs-boxed justify-center lg:justify-start'>
-					<a class='tab tab-active'>
+					<TabButton tabName={'next'} />
+					<TabButton tabName={'later'} />
+					<TabButton tabName={'recurring'} />
+					<TabButton tabName={'completed'} />
+					<TabButton tabName={'deleted'} />
+
+					<!-- <a class='tab tab-active'>
 						<i class='fa-solid fa-play mr-2' />
 						<span class='uppercase'>next</span>
 					</a>
@@ -61,7 +67,7 @@
 					<a class='tab'>
 						<i class='fa-solid fa-trash mr-2' />
 						<span class='uppercase'>deleted</span>
-					</a>
+					</a> -->
 				</div>
 			</div>
 		
