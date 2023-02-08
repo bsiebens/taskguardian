@@ -1,6 +1,7 @@
 <script>
 	import { getNotificationsContext } from 'svelte-notifications';
-	import { activeTab } from '../lib/stores';
+	import { activeTab, tasks } from '../lib/stores';
+    import TaskList from '../lib/TaskList.svelte';
 
 	const { addNotification } = getNotificationsContext();
 
@@ -8,35 +9,8 @@
 	 * @type {{ tasks: { next: any; }; }}
 	 */
 	export let data;
+
+    $: tasks.set(data.tasks[$activeTab])
 </script>
 
-{$activeTab}
-
-<label for="add" class="btn">open modal</label>
-
-<!-- <form
-	method="post"
-	action="?/sync"
-	use:enhance={({ form, data, action, cancel }) => {
-		return async ({ result, update }) => {
-			addNotification({
-				// @ts-ignore
-				description: result.data.message,
-				// @ts-ignore
-				type: result.data.type,
-				heading: 'Sync status',
-				position: 'bottom-center',
-				removeAfter: 10 * 1000
-			});
-			await invalidateAll();
-		};
-	}}
->
-	<button class="btn" type="submit">sync</button>
-</form> -->
-
-<ul>
-	{#each data.tasks.next as task}
-		<li>{task.description}</li>
-	{/each}
-</ul>
+<TaskList pendingTasks={data.tasks['pending']} />

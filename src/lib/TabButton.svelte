@@ -1,5 +1,6 @@
 <script>
 	import { activeTab } from './stores';
+	import { IconPlayerPlay, IconClockHour2, IconRepeat, IconCheckbox, IconTrash, IconCircleDashed }from '@tabler/icons-svelte';
 
 	/**
 	 * @type {string}
@@ -14,34 +15,34 @@
 {#if $activeTab === tabName}
 	<a class="tab tab-active grow lg:tab-bordered" href="/" on:click={setActiveTab}>
 		{#if tabName === 'next'}
-			<i class="fa-solid fa-play mr-2" />
+			<IconPlayerPlay class='mr-2' />
 		{:else if tabName === 'later'}
-			<i class="fa-solid fa-clock mr-2" />
+			<IconClockHour2 class='mr-2' />
 		{:else if tabName === 'recurring'}
-			<i class="fa-solid fa-repeat mr-2" />
+			<IconRepeat class='mr-2' />
 		{:else if tabName === 'completed'}
-			<i class="fa-solid fa-square-check mr-2" />
+			<IconCheckbox class='mr-2' />
 		{:else if tabName === 'deleted'}
-			<i class="fa-solid fa-trash mr-2" />
+			<IconTrash class='mr-2' />
 		{:else}
-			<i class="fa-solid fa-circle-question mr-2" />
+			<IconCircleDashed class='mr-2' />
 		{/if}
 		<span class="uppercase">{tabName}</span>
 	</a>
 {:else}
 	<a class="tab grow lg:tab-bordered" href="/" on:click={setActiveTab}>
 		{#if tabName === 'next'}
-			<i class="fa-solid fa-play mr-2" />
+			<IconPlayerPlay class='mr-2' />
 		{:else if tabName === 'later'}
-			<i class="fa-solid fa-clock mr-2" />
+			<IconClockHour2 class='mr-2' />
 		{:else if tabName === 'recurring'}
-			<i class="fa-solid fa-repeat mr-2" />
+			<IconRepeat class='mr-2' />
 		{:else if tabName === 'completed'}
-			<i class="fa-solid fa-square-check mr-2" />
+			<IconCheckbox class='mr-2' />
 		{:else if tabName === 'deleted'}
-			<i class="fa-solid fa-trash mr-2" />
+			<IconTrash class='mr-2' />
 		{:else}
-			<i class="fa-solid fa-circle-question mr-2" />
+			<IconCircleDashed class='mr-2' />
 		{/if}
 		<span class="uppercase">{tabName}</span>
 	</a>

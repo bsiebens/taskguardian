@@ -7,6 +7,7 @@
 	import Alert from '../lib/Alert.svelte';
 	import SyncButton from '../lib/SyncButton.svelte';
 	import TabButton from '../lib/TabButton.svelte';
+	import { IconSun, IconMoon, IconPlus } from '@tabler/icons-svelte';
 
 	onMount(() => {
 		themeChange(false);
@@ -23,8 +24,8 @@
 	<div class="mr-2 flex-none gap-4 lg:mr-32">
 		<label class="swap-rotate swap">
 			<input data-toggle-theme="halloween,emerald" data-act-class="active" type="checkbox" id="darkMode" />
-			<i class="fa-solid fa-sun swap-off h-6 w-6 fill-current" />
-			<i class="fa-solid fa-moon swap-on h-6 w-6 fill-current" />
+			<IconSun class='swap-off h-6 w-6 fill-current' />
+			<IconMoon class='swap-on h-6 w-6 fill-current' />
 		</label>
 	</div>
 </div>
@@ -49,8 +50,8 @@
 			<div class="mx-auto mb-4 flex lg:mx-0 lg:mb-0 lg:ml-4">
 				<div class="flex flex-row gap-x-2">
 					<SyncButton />
-					<button class="btn-primary btn w-24">
-						<i class="fa-solid fa-plus mr-2" />add
+					<button class="btn-primary btn w-28">
+						<IconPlus class='mx-1' />add
 					</button>
 				</div>
 			</div>

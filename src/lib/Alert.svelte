@@ -1,5 +1,6 @@
 <script>
 	// @ts-nocheck
+	import { IconAlertOctagon, IconAlertTriangle, IconCheckbox, IconX } from '@tabler/icons-svelte';
 
 	export let notification = {};
 	/**
@@ -23,11 +24,11 @@
 <div class={alertClass} style="width: 500px; margin-left: -50px;">
 	<div>
 		{#if notification.type === 'success'}
-			<i class="fa-solid fa-circle-check mr-2 h-8 w-8" />
+			<IconCheckbox class='mr-2 h-8 w-8' />
 		{:else if notification.type === 'warning'}
-			<i class="fa-solid fa-triangle-exclamation mr-2 h-8 w-8" />
+			<IconAlertTriangle class='mr-2 h-8 w-8' />
 		{:else}
-			<i class="fa-solid fa-circle-exclamation mr-2 h-8 w-8" />
+			<IconAlertOctagon class='mr-2 h-8 w-8' />
 		{/if}
 		{#if notification.heading != undefined}
 			<div>
@@ -40,7 +41,7 @@
 	</div>
 	<div class="flex-none">
 		<button class="btn-ghost btn-square btn-sm btn" on:click={handleButtonClick}>
-			<i class="fa-solid fa-times" />
+			<IconX />
 		</button>
 	</div>
 </div>

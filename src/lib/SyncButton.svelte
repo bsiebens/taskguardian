@@ -2,6 +2,7 @@
 	import { getNotificationsContext } from 'svelte-notifications';
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
+	import { IconRefresh } from '@tabler/icons-svelte';
 
 	const { addNotification } = getNotificationsContext();
 </script>
@@ -14,7 +15,7 @@
 			console.log('Running');
 			addNotification({
 				// @ts-ignore
-				description: result.data.message,
+				description: 'Synced succesfully with taskserver',
 				// @ts-ignore
 				type: result.data.type,
 				heading: 'Sync status',
@@ -25,7 +26,7 @@
 		};
 	}}
 >
-	<button type="submit" class="btn-secondary btn w-24">
-		<i class="fa-solid fa-refresh mr-2" />sync
+	<button type="submit" class="btn-secondary btn w-28">
+		<IconRefresh class='mx-1'/>sync
 	</button>
 </form>
