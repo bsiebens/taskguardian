@@ -29,10 +29,14 @@
 		{:else}
 			<i class="fa-solid fa-circle-exclamation mr-2 h-8 w-8" />
 		{/if}
-		<div>
-			<h3 class="font-bold">{notification.heading}</h3>
-			<div class="font-xs">{notification.description}</div>
-		</div>
+		{#if notification.heading != undefined}
+			<div>
+				<h3 class="font-bold">{notification.heading}</h3>
+				<div class="font-xs">{notification.description}</div>
+			</div>
+		{:else}
+			<span>{notification.description}</span>
+		{/if}
 	</div>
 	<div class="flex-none">
 		<button class="btn-ghost btn-square btn-sm btn" on:click={handleButtonClick}>
