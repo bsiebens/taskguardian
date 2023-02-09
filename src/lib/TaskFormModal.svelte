@@ -17,7 +17,7 @@
 			{/if}
 		</h3>
 
-		<form class="space-y-2">
+		<form class="space-y-2" method="post" action="?/add">
 			<div class="form-control w-full">
 				<label for="description" class="label font-semibold">
 					<span class="label-text">Description</span>
@@ -115,10 +115,11 @@
 					</div>
 				</div>
 			</div>
-		</form>
 
-		<div class="modal-action">
-			<label for={id} class="btn">Yay!</label>
-		</div>
+			<div class="modal-action">
+				<label for={id} class="btn-ghost btn">Cancel</label>
+				<button type="submit" class="btn-primary btn">Save</button>
+			</div>
+		</form>
 	</div>
 </div>

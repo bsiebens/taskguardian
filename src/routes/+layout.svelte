@@ -1,5 +1,5 @@
 <script>
-	import FormModal from '$lib/FormModal.svelte';
+	import TaskFormModal from '$lib/TaskFormModal.svelte';
 	import { onMount } from 'svelte';
 	import Notifications from 'svelte-notifications';
 	import { themeChange } from 'theme-change';
@@ -50,7 +50,7 @@
 			<div class="mx-auto mb-4 flex lg:mx-0 lg:mb-0 lg:ml-4">
 				<div class="flex flex-row gap-x-2">
 					<SyncButton />
-					<label for="add" class="btn-primary btn w-28">
+					<label for="addTask" class="btn-primary btn w-28">
 						<IconPlus class="mx-1" />add
 					</label>
 				</div>
@@ -62,7 +62,7 @@
 		</div>
 	</div>
 
-	<FormModal id="add" />
+	<TaskFormModal id="addTask" />
 </Notifications>
 
 <footer class="footer footer-center bg-base-300 p-4 text-base-content">

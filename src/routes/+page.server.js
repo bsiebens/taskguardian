@@ -39,5 +39,5 @@ export const actions = {
         } catch (error) {
             return { type: 'error', message: 'Sync could not be executed: ' + error }
         }
-    }
+    },
 }
