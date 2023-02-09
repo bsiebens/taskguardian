@@ -1,11 +1,18 @@
 <script>
+	import { getNotificationsContext } from 'svelte-notifications';
+	import { enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
+
 	/**
 	 * @type {string}
 	 */
 	export let id;
+	let isModalOpen = false;
+
+	const { addNotification } = getNotificationsContext();
 </script>
 
-<input type="checkbox" {id} class="modal-toggle" />
+<input type="checkbox" {id} class="modal-toggle" bind:checked={isModalOpen} />
 
 <div class="modal modal-bottom sm:modal-middle">
 	<div class="modal-box sm:w-10/12 sm:max-w-5xl">
@@ -17,7 +24,26 @@
 			{/if}
 		</h3>
 
-		<form class="space-y-2" method="post" action="?/add">
+		<form
+			class="space-y-2"
+			method="post"
+			action="?/add"
+			use:enhance={({ form, data, action, cancel }) => {
+				return async ({ result, update }) => {
+					addNotification({
+						// @ts-ignore
+						description: result.data.message,
+						// @ts-ignore
+						type: result.data.type,
+						heading: 'Sync status',
+						position: 'bottom-center',
+						removeAfter: 10 * 1000
+					});
+					isModalOpen = false;
+					await invalidateAll();
+				};
+			}}
+		>
 			<div class="form-control w-full">
 				<label for="description" class="label font-semibold">
 					<span class="label-text">Description</span>
@@ -70,15 +96,14 @@
 			</div>
 
 			<h4 class="label-text pt-4 font-semibold">Recurrence</h4>
-			<div class="grid grid-cols-3 items-center gap-2 pb-4">
+			<div class="grid grid-cols-6 items-center gap-2 pb-4">
 				<div class="form-control w-full">
 					<label for="recurrence" class="label cursor-pointer justify-start">
 						<input type="checkbox" name="recurrence" class="toggle" />
-						<span class="label-text ml-2 text-left">Recurring?</span>
 					</label>
 				</div>
 
-				<div class="form-control col-span-2 w-full">
+				<div class="form-control col-span-5 w-full">
 					<input id="period" name="period" type="text" placeholder="Period" class="input-bordered input w-full" />
 				</div>
 			</div>
@@ -88,7 +113,7 @@
 				<div class="flex flex-row">
 					<div class="form-control w-full">
 						<label for="none" class="label cursor-pointer justify-start">
-							<input type="radio" name="priority" class="radio" value="" />
+							<input type="radio" name="priority" class="radio" value="" checked />
 							<span class="label-text ml-2">No priority</span>
 						</label>
 					</div>

@@ -12,7 +12,6 @@
 	action="?/sync"
 	use:enhance={({ form, data, action, cancel }) => {
 		return async ({ result, update }) => {
-			console.log('Running');
 			addNotification({
 				// @ts-ignore
 				description: result.data.message,

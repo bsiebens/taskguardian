@@ -1,4 +1,4 @@
-import { TaskwarriorLib } from "taskwarrior-lib"
+import { TaskwarriorLib, Task } from "taskwarrior-lib"
 import { convertTaskwarriorDateToISO8601Format } from '../lib/utilities'
 
 const taskwarrior = new TaskwarriorLib()
@@ -43,9 +43,19 @@ export const actions = {
     },
     add: async ({ request }) => {
         const data = await request.formData();
+        let task = {
+            description: data.get('description'),
+            project: (data.get('project') === '') ? undefined : data.get('project'),
+            due: (data.get('due') === '') ? undefined : data.get('due'),
+            until: (data.get('until') === '') ? undefined : data.get('until'),
+            wait: (data.get('wait') === '') ? undefined : data.get('wait'),
+            scheduled: (data.get('scheduled') === '') ? undefined : data.get('scheduled'),
+            tags: (data.get('tags') === '') ? undefined : data.get('tags').split(' '),
+            priority: (data.get('priority') === '') ? undefined : data.get('priority'),
+            recur: (data.get('recurrence') === 'on') ? data.get('period') : undefined,
+        }
 
-        console.log(data);
-
-        return { type: 'success', message: 'Task completed' }
+        taskwarrior.update([task]);
+        return { type: 'success', message: 'Task ' + task.description + ' added' };
     }
 }
