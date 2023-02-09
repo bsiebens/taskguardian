@@ -27,7 +27,7 @@
 		<form
 			class="space-y-2"
 			method="post"
-			action="?/add"
+			action="?/update"
 			use:enhance={({ form, data, action, cancel }) => {
 				return async ({ result, update }) => {
 					addNotification({
@@ -44,6 +44,9 @@
 				};
 			}}
 		>
+			{#if id === 'add'}
+				<input type="hidden" name="id" value="" />
+			{:else}{/if}
 			<div class="form-control w-full">
 				<label for="description" class="label font-semibold">
 					<span class="label-text">Description</span>

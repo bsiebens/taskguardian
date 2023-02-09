@@ -7,6 +7,7 @@
 	import { convertTaskwarriorDateToISO8601Format } from './utilities';
 	import TaskIcons from './TaskIcons.svelte';
 	import TaskDescription from './TaskDescription.svelte';
+	import TaskActions from './TaskActions.svelte';
 
 	/**
 	 * @type {[]}
@@ -109,7 +110,7 @@
 		table.display({
 			header: '',
 			id: 'actions',
-			cell: ({ row }) => createRender(TaskIcons, { task: row.original, pendingTasks: pendingTasks })
+			cell: ({ row }) => createRender(TaskActions, { task: row.original })
 		})
 	]);
 
