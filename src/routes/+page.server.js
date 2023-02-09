@@ -35,9 +35,17 @@ export function load() {
 export const actions = {
     sync: async () => {
         try {
-            return { type: 'success', message: taskwarrior.executeCommand('sync') }
+            taskwarrior.executeCommand('sync');
+            return { type: 'success', message: 'Synced succesfully with taskserver' }
         } catch (error) {
             return { type: 'error', message: 'Sync could not be executed: ' + error }
         }
     },
+    add: async ({ request }) => {
+        const data = await request.formData();
+
+        console.log(data);
+
+        return { type: 'success', message: 'Task completed' }
+    }
 }

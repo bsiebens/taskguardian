@@ -15,7 +15,7 @@
 			console.log('Running');
 			addNotification({
 				// @ts-ignore
-				description: 'Synced succesfully with taskserver',
+				description: result.data.message,
 				// @ts-ignore
 				type: result.data.type,
 				heading: 'Sync status',
