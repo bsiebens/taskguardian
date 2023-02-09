@@ -1,7 +1,7 @@
 <script>
 	import { getNotificationsContext } from 'svelte-notifications';
 	import { activeTab, tasks } from '../lib/stores';
-    import TaskList from '../lib/TaskList.svelte';
+	import TaskList from '../lib/TaskList.svelte';
 
 	const { addNotification } = getNotificationsContext();
 
@@ -10,7 +10,7 @@
 	 */
 	export let data;
 
-    $: tasks.set(data.tasks[$activeTab])
+	$: tasks.set(data.tasks[$activeTab]);
 </script>
 
 <TaskList pendingTasks={data.tasks['pending']} />

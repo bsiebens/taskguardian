@@ -24,11 +24,11 @@
 <div class={alertClass} style="width: 500px; margin-left: -50px;">
 	<div>
 		{#if notification.type === 'success'}
-			<IconCheckbox class='mr-2 h-8 w-8' />
+			<IconCheckbox class="mr-2 h-8 w-8" />
 		{:else if notification.type === 'warning'}
-			<IconAlertTriangle class='mr-2 h-8 w-8' />
+			<IconAlertTriangle class="mr-2 h-8 w-8" />
 		{:else}
-			<IconAlertOctagon class='mr-2 h-8 w-8' />
+			<IconAlertOctagon class="mr-2 h-8 w-8" />
 		{/if}
 		{#if notification.heading != undefined}
 			<div>

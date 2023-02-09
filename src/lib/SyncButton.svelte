@@ -27,6 +27,6 @@
 	}}
 >
 	<button type="submit" class="btn-secondary btn w-28">
-		<IconRefresh class='mx-1'/>sync
+		<IconRefresh class="mx-1" />sync
 	</button>
 </form>

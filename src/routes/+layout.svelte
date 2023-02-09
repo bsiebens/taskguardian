@@ -24,8 +24,8 @@
 	<div class="mr-2 flex-none gap-4 lg:mr-32">
 		<label class="swap-rotate swap">
 			<input data-toggle-theme="halloween,emerald" data-act-class="active" type="checkbox" id="darkMode" />
-			<IconSun class='swap-off h-6 w-6 fill-current' />
-			<IconMoon class='swap-on h-6 w-6 fill-current' />
+			<IconSun class="swap-off h-6 w-6 fill-current" />
+			<IconMoon class="swap-on h-6 w-6 fill-current" />
 		</label>
 	</div>
 </div>
@@ -51,7 +51,7 @@
 				<div class="flex flex-row gap-x-2">
 					<SyncButton />
 					<button class="btn-primary btn w-28">
-						<IconPlus class='mx-1' />add
+						<IconPlus class="mx-1" />add
 					</button>
 				</div>
 			</div>
