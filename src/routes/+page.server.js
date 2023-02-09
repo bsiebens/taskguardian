@@ -55,7 +55,11 @@ export const actions = {
             recur: (data.get('recurrence') === 'on') ? data.get('period') : undefined,
         }
 
-        taskwarrior.update([task]);
-        return { type: 'success', message: 'Task ' + task.description + ' added' };
+        try {
+            taskwarrior.update([task]);
+            return { type: 'success', message: 'Task ' + task.description + ' added' };
+        } catch (error) {
+            return { type: 'error', message: 'Error: ' + error };
+        }
     }
 }
