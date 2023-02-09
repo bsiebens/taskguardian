@@ -50,9 +50,9 @@
 			<div class="mx-auto mb-4 flex lg:mx-0 lg:mb-0 lg:ml-4">
 				<div class="flex flex-row gap-x-2">
 					<SyncButton />
-					<button class="btn-primary btn w-28">
+					<label for="add" class="btn-primary btn w-28">
 						<IconPlus class="mx-1" />add
-					</button>
+					</label>
 				</div>
 			</div>
 		</div>
