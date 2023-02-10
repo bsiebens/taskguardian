@@ -19,9 +19,26 @@
 	$: level2Projects = level1Selector === 'all' ? [] : $projects.level2[level1Selector];
 	$: detailedSelectDisabled = level1Selector === 'all' ? true : false;
 	$: level2Selector = level1Selector;
+	$: filterTasksBasedOnProject(level2Selector);
+
+	function filterTasksBasedOnProject(filter) {
+		if (filter != 'all') {
+			let filteredTasks = [];
+
+			$tasks.forEach((task) => {
+				if (task.project != undefined) {
+					if (task.project.startsWith(filter)) {
+						filteredTasks.push(task);
+					}
+				}
+			});
+
+			tasks.set(filteredTasks);
+		}
+	}
 </script>
 
-<div class="mt-4">
+<div class="my-4">
 	<div class="flex flex-row place-content-end gap-x-2">
 		<select class="select-bordered select w-full max-w-xs" bind:value={level1Selector} on:change={() => console.log(level1Selector)}>
 			<option value="all" selected>all tasks</option>
@@ -30,7 +47,7 @@
 			{/each}
 		</select>
 
-		<select class="select-bordered select w-full max-w-xs" disabled={detailedSelectDisabled} bind:value={level2Selector} on:change={() => console.log(level2Selector)}>
+		<select class="select-bordered select w-full max-w-xs" disabled={detailedSelectDisabled} bind:value={level2Selector}>
 			<option value={level1Selector} selected>all tasks</option>
 			{#each level2Projects.sort() as project}
 				<option value={project}>{project}</option>
@@ -39,4 +56,4 @@
 	</div>
 </div>
 
-<!-- <TaskList pendingTasks={data.tasks['pending']} /> -->
+<TaskList pendingTasks={data.tasks['pending']} />
