@@ -36,10 +36,65 @@ export const actions = {
     sync: async () => {
         try {
             taskwarrior.executeCommand('sync');
-            return { type: 'success', message: 'Synced succesfully with taskserver' }
+            return { heading: 'Sync status', type: 'success', message: 'Synced succesfully with taskserver' }
         } catch (error) {
-            return { type: 'error', message: 'Sync could not be executed: ' + error }
+            return { heading: 'Sync status', type: 'error', message: 'Sync could not be executed: ' + error }
         }
+    },
+    completed: async ({ request }) => {
+        const data = await request.formData();
+        let task = taskwarrior.load(data.get('id'))[0];
+
+        task.status = 'completed';
+        taskwarrior.update([task]);
+
+        return { heading: 'Task marked as completed', type: 'success', message: task.description };
+    },
+    incompleted: async ({ request }) => {
+        const data = await request.formData();
+        let task = taskwarrior.load(data.get('id'))[0];
+
+        task.status = 'pending';
+        taskwarrior.update([task]);
+
+        return { heading: 'Task marked as incompleted', type: 'success', message: task.description };
+    },
+    deleted: async ({ request }) => {
+        const data = await request.formData();
+        let task = taskwarrior.load(data.get('id'))[0];
+
+        task.status = 'deleted';
+        taskwarrior.update([task]);
+
+        return { heading: 'Task deleted', type: 'success', message: task.description };
+    },
+    restored: async ({ request }) => {
+        const data = await request.formData();
+        let task = taskwarrior.load(data.get('id'))[0];
+
+        task.status = 'pending';
+        taskwarrior.update([task]);
+
+        return { heading: 'Task restored', type: 'success', message: task.description };
+    },
+    annotate: async ({ request }) => {
+        const data = await request.formData();
+        let task = taskwarrior.load(data.get('id'))[0];
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+        var localISOTime = (new Date(Date.now() - tzoffset)).toISOString();
+        let annotation = {
+            entry: localISOTime,
+            description: data.get('annotation')
+        }
+
+        if (task.annotations === undefined) {
+            task.annotations = [annotation];
+        } else {
+            task.annotations.push(annotation);
+        }
+
+        taskwarrior.update([task]);
+        return { heading: 'Annotation added', type: "success", message: task.description };
     },
     update: async ({ request }) => {
         const data = await request.formData();
@@ -72,9 +127,14 @@ export const actions = {
 
         try {
             taskwarrior.update([task]);
-            return { type: 'success', message: 'Task ' + task.description + ' added' };
+
+            if (data.get('id') === null) {
+                return { heading: 'Task created', type: 'success', message: 'Task ' + task.description + ' added' };
+            } else {
+                return { heading: 'Task updated', type: 'success', message: 'Task ' + task.description + ' updated' };
+            }
         } catch (error) {
-            return { type: 'error', message: 'Error: ' + error };
+            return { heading: 'Task creation error', type: 'error', message: 'Error: ' + error };
         }
     }
 }

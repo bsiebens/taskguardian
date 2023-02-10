@@ -28,7 +28,7 @@
 <div class="modal modal-bottom sm:modal-middle">
 	<div class="modal-box sm:w-10/12 sm:max-w-5xl">
 		<h3 class="mb-1 text-lg font-bold">
-			{#if id === 'add'}
+			{#if id === 'addTask'}
 				Add new task
 			{:else}
 				Edit task
@@ -46,7 +46,7 @@
 						description: result.data.message,
 						// @ts-ignore
 						type: result.data.type,
-						heading: 'Sync status',
+						heading: result.data.heading,
 						position: 'bottom-center',
 						removeAfter: 10 * 1000
 					});
@@ -55,7 +55,7 @@
 				};
 			}}
 		>
-			{#if id === 'add'}
+			{#if id === 'addTask'}
 				<input type="hidden" name="id" value="" />
 
 				<div class="form-control w-full">
