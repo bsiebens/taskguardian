@@ -57,9 +57,7 @@
 			</div>
 		</div>
 
-		<div class="prose max-w-none">
-			<slot />
-		</div>
+		<slot />
 	</div>
 
 	<TaskFormModal id="addTask" />

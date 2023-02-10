@@ -9,7 +9,49 @@ export function load() {
         return task.status === 'pending'
     }).map(task => task.uuid)
 
+
+    const projects = { level1: [], level2: {} };
+    tasks.forEach(task => {
+        if (task.project != undefined) {
+            let mainProject = task.project.split(".")[0];
+
+            if (!(projects.level1.includes(mainProject))) {
+                projects.level1.push(mainProject);
+
+                if (mainProject != task.project) {
+                    projects.level2[mainProject] = [task.project];
+                } else {
+                    projects.level2[mainProject] = [];
+                }
+            } else {
+                if (!(projects.level2[mainProject].includes(task.project))) {
+                    if (mainProject != task.project) {
+                        projects.level2[mainProject].push(task.project);
+                    }
+                }
+            }
+
+            /* let topLevelProject = task.project.split(".")[0];
+
+            if (!(projects.topLevelProjects.includes(topLevelProject))) {
+                projects.topLevelProjects.push(topLevelProject);
+                if (topLevelProject != task.project) {
+                    projects.childProjects[topLevelProject] = [task.project];
+                }
+            } else {
+                if (!(projects.childProjects[topLevelProject].includes(task.project))) {
+                    if (topLevelProject != task.project) {
+                        projects.childProjects[topLevelProject].push(task.project);
+                    }
+                }
+            } */
+        }
+    });
+
+    console.log(projects);
+
     return {
+        projects: projects,
         tasks: {
             all: tasks,
             pending: pendingTasks,

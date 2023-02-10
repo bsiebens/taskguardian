@@ -3,7 +3,7 @@
 	import { createRender, createTable, Render, Subscribe } from 'svelte-headless-table';
 	import { IconArrowDown, IconArrowsSort, IconArrowUp } from '@tabler/icons-svelte';
 	import { addSortBy } from 'svelte-headless-table/plugins';
-	import { tasks } from './stores';
+	import { tasks, projects } from './stores';
 	import { convertTaskwarriorDateToISO8601Format } from './utilities';
 	import TaskIcons from './TaskIcons.svelte';
 	import TaskDescription from './TaskDescription.svelte';
