@@ -1,4 +1,4 @@
 import { writable } from "svelte/store";
 
-export let tasks = writable([]);
-export let pendingTasks = writable([]);
+export const activeTab = writable('next');
+export const tasks = writable([]);
