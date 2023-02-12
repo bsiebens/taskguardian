@@ -39,7 +39,7 @@ function filterTaskList(taskList: Task[], taskFilter: string) {
 }
 
 export const taskList: Writable<Task[]> = writable([]);
-export const taskFilter: Writable<string> = writable("all");
+export const taskFilter: Writable<string> = writable("next");
 
 export const pendingTasks = derived(taskList, $taskList => {
     return $taskList.filter(function (task) {
