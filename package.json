@@ -29,6 +29,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@tabler/icons-svelte": "^2.3.0",
 		"taskwarrior-lib": "^0.5.2"
 	}
 }
