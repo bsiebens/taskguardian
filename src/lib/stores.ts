@@ -1,4 +1,4 @@
-import { writable, derived } from "svelte/store";
+import { derived, writable } from "svelte/store";
 import { convertTaskwarriorDateToISO8601Format } from "./utils";
 
 import type { Writable } from "svelte/store";

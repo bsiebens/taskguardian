@@ -1,8 +1,8 @@
 <script lang="ts">
-	import '../app.css';
+	import { IconMoon, IconSun } from '@tabler/icons-svelte';
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
-	import { IconSun, IconMoon } from '@tabler/icons-svelte';
+	import '../app.css';
 	import TabButton from '../lib/TabButton.svelte';
 
 	onMount(() => {

@@ -1,6 +1,5 @@
 import { TaskwarriorLib } from "taskwarrior-lib";
 
-import type { Task } from "taskwarrior-lib";
 import type { PageServerLoad } from "./$types";
 
 const taskwarrior = new TaskwarriorLib();

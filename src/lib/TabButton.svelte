@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { IconCheckbox, IconClockHour2, IconPlayerPlay, IconRepeat, IconTrash } from '@tabler/icons-svelte';
 	import { taskFilter } from './stores';
-	import { IconPlayerPlay, IconClockHour2, IconRepeat, IconCheckbox, IconTrash } from '@tabler/icons-svelte';
 
 	import type { ComponentType } from 'svelte';
 
