@@ -16,16 +16,18 @@
 	function markActive() {
 		taskFilter.set(buttonName);
 	}
+
+	$: buttonNameIcon = buttonNameToIcon[buttonName];
 </script>
 
 {#if $taskFilter === buttonName}
 	<a class="tab tab-active grow lg:tab-bordered" href="/" on:click={markActive}>
-		<svelte:component this={buttonNameToIcon[buttonName]} />
+		<svelte:component this={buttonNameIcon} />
 		<span class="ml-2 uppercase">{buttonName}</span>
 	</a>
 {:else}
 	<a class="tab grow lg:tab-bordered" href="/" on:click={markActive}>
-		<svelte:component this={buttonNameToIcon[buttonName]} />
+		<svelte:component this={buttonNameIcon} />
 		<span class="ml-2 uppercase">{buttonName}</span>
 	</a>
 {/if}
