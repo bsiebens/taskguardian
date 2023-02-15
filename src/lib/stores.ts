@@ -33,6 +33,12 @@ function filterTaskList(taskList: Task[], taskFilter: string) {
             // @ts-ignore
             return new Date(convertTaskwarriorDateToISO8601Format(task.wait)) > new Date();
         });
+    } else if (taskFilter === 'inbox') {
+        return taskList.filter(function (task) {
+            if (task.status != 'pending') return false;
+
+            return task.tags?.includes("inbox");
+        });
     } else {
         return taskList;
     }
@@ -50,3 +56,7 @@ export const pendingTasks = derived(taskList, $taskList => {
 export const filteredTasks = derived([taskList, taskFilter], ([$taskList, $taskFilter]) => {
     return filterTaskList($taskList, $taskFilter);
 }, []);
+
+export const inboxTaskCount = derived(taskList, $taskList => {
+    return filterTaskList($taskList, "inbox").length;
+}, 0);

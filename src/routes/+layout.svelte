@@ -7,6 +7,7 @@
 	import SyncButton from '../lib/SyncButton.svelte';
 	import Notifications from 'svelte-notifications';
 	import CustomNotification from '../lib/CustomNotification.svelte';
+	import TaskFormModal from '../lib/TaskFormModal.svelte';
 
 	onMount(() => {
 		themeChange(false);
@@ -39,6 +40,7 @@
 		<div class="flex flex-col items-center lg:flex-row">
 			<div class="mb-4 flex-auto lg:mb-0">
 				<div class="tabs justify-center lg:justify-start">
+					<TabButton buttonName={'inbox'} />
 					<TabButton buttonName={'next'} />
 					<TabButton buttonName={'later'} />
 					<TabButton buttonName={'recurring'} />
@@ -61,6 +63,8 @@
 			<slot />
 		</div>
 	</div>
+
+	<TaskFormModal modalID="addTask" />
 </Notifications>
 
 <footer class="footer footer-center bg-base-300 p-4 text-base-content">
