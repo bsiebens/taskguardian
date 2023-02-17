@@ -23,5 +23,23 @@ export const actions = {
         } catch (error) {
             return { heading: 'Sync status', type: 'error', message: 'Sync could not be executed: ' + error }
         }
+    },
+    complete: async ({ request }) => {
+        const data = await request.formData();
+        let task = taskwarrior.load(data.get('id'))[0];
+
+        task.status = task.status === 'pending' ? 'completed' : 'pending';
+        taskwarrior.update([task]);
+
+        return { heading: 'Task updated', type: 'success', message: 'Task marked as ' + task.status};
+    },
+    delete: async ({ request }) => {
+
+    },
+    annotate: async ({ request }) => {
+
+    },
+    edit: async ({ request }) => {
+
     }
 } satisfies Actions;
