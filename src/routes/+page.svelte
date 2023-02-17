@@ -1,16 +1,14 @@
-<script>
-	import { getNotificationsContext } from 'svelte-notifications';
-	import { activeTab, tasks } from '../lib/stores';
+<script lang="ts">
+	import { taskList } from '../lib/stores';
 	import TaskList from '../lib/TaskList.svelte';
 
-	const { addNotification } = getNotificationsContext();
+	import type { PageData } from './$types';
 
-	/**
-	 * @type {{ tasks: { next: any; }; }}
-	 */
-	export let data;
+	export let data: PageData;
 
-	$: tasks.set(data.tasks[$activeTab]);
+	$: taskList.set(data.tasks);
 </script>
 
-<TaskList pendingTasks={data.tasks['pending']} />
+<div class="mt-8">
+	<TaskList />
+</div>
