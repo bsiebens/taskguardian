@@ -18,7 +18,7 @@ export const actions = {
         try {
             taskwarrior.executeCommand('sync');
             return {
-                heading: 'Sync status', type: 'succcess', message: 'Synces succesfully with taskserver'
+                heading: 'Sync status', type: 'success', message: 'Synced succesfully with taskserver'
             }
         } catch (error) {
             return { heading: 'Sync status', type: 'error', message: 'Sync could not be executed: ' + error }
