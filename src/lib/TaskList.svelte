@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { IconAlertCircle, IconAlertTriangle, IconCheckbox, IconLock, IconPlayerPlay, IconTag, IconTrash, IconArrowsSort, IconArrowUp, IconArrowDown, IconPencil, IconPlaylistAdd, IconCheck, IconArrowBackUp, IconTrashOff } from '@tabler/icons-svelte';
 	import moment from 'moment';
-	import { filteredTasks, pendingTasks, taskFilter, taskSortingField, taskSortingDirection } from './stores';
+	import { filteredTasks, pendingTasks, taskFilter, taskSortingField, taskSortingDirection, projectFilter, projects } from './stores';
 	import { convertTaskwarriorDateToISO8601Format } from './utils';
 	import { invalidate } from '$app/navigation';
 	import { getNotificationsContext } from 'svelte-notifications';
@@ -14,6 +14,7 @@
 	let selectedTask: Task | undefined = undefined;
 	let annotationTaskModalOpen: boolean = false;
 	let formTaskModalOpen: boolean = false;
+	let level1Selector = 'all';
 
 	const { addNotification } = getNotificationsContext();
 	
@@ -97,10 +98,30 @@
 
 	// Remove task when filter changes (as otherwise the table does not update properly)
 	$: $taskFilter, removeSelectedTask();
+	$: disableLevel2Selector = level1Selector === 'all' ? true : false;
+	$: $projectFilter = level1Selector;
 </script>
 
 <TaskAnnotationFormModal task={selectedTask} bind:isModalOpen={annotationTaskModalOpen}/>
 <TaskFormModal task={selectedTask} bind:isModalOpen={formTaskModalOpen} modalID={"editTask"} />
+
+<div class='my-4'>
+	<div class='flex flex-row place-content-center lg:place-content-end gap-x-2'>
+		<select class='select-bordered select w-full max-w-xs' bind:value={level1Selector}>
+			<option value="all" selected>all tasks</option>
+			{#each $projects.level1.sort() as project}
+				<option value={project}>{project}</option>
+			{/each}
+		</select>
+
+		<select class='select-bordered select w-full max-w-xs' disabled={disableLevel2Selector} bind:value={$projectFilter}>
+			<option value={level1Selector} selected>all tasks</option>
+			{#each (level1Selector === 'all' ? [] : $projects.level2[level1Selector]).sort() as project}
+				<option value={project}>{project.replace('.', ' / ')}</option>
+			{/each}
+		</select>
+	</div>
+</div>
 
 <div class="overflow-x-auto">
 	<table class="table w-full">
