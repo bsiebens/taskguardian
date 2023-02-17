@@ -2,7 +2,7 @@
 	import { browser } from '$app/environment';
 	import { IconAlertCircle, IconAlertTriangle, IconCheckbox, IconLock, IconPlayerPlay, IconTag, IconTrash, IconArrowsSort, IconArrowUp, IconArrowDown } from '@tabler/icons-svelte';
 	import moment from 'moment';
-	import { filteredTasks, pendingTasks, taskFilter } from './stores';
+	import { filteredTasks, pendingTasks, taskFilter, taskSortingField, taskSortingDirection } from './stores';
 	import { convertTaskwarriorDateToISO8601Format } from './utils';
 
 	import type { Task } from 'taskwarrior-lib';
@@ -75,52 +75,17 @@
 		return 'hover';
 	}
 
-	function sortTasksByColumn(tasks: Task[], field: string, direction = 'asc') {
-		if (browser) {
-			window.sessionStorage.setItem('sortingField', field);
-			window.sessionStorage.setItem('sortingDirection', direction);
-		}
-
-		const priorityToScore = { '': 0, L: 1, M: 2, H: 3, undefined: 0 };
-
-		let sortedTasks = tasks.sort((a, b) => {
-			// @ts-ignore
-			let varA = a[field];
-			// @ts-ignore
-			let varB = b[field];
-
-			if (field === 'priority') {
-				// @ts-ignore
-				varA = priorityToScore[varA];
-				// @ts-ignore
-				varB = priorityToScore[varB];
-			}
-
-			let comparison = 0;
-			if (varA > varB) {
-				comparison = 1;
-			} else if (varA < varB) {
-				comparison = -1;
-			}
-
-			return direction === 'desc' ? comparison * -1 : comparison;
-		});
-
-		return sortedTasks;
-	}
-
-	function toggleSortingFieldAndDirection(field: string) {
-		if (field === sortingField) {
-			sortingDirection = sortingDirection === 'asc' ? 'desc' : 'asc';
+	function toggleSortingFieldAndDirection(field: "urgency" | "priority") {
+		if (field === $taskSortingField) {
+			$taskSortingDirection = $taskSortingDirection === 'asc' ? 'desc' : 'asc';
 		} else {
-			sortingField = field;
-			sortingDirection = 'asc';
+			$taskSortingField = field;
+			$taskSortingDirection = 'asc';
 		}
 	}
 
 	// Remove task when filter changes (as otherwise the table does not update properly)
 	$: $taskFilter, removeSelectedTask();
-	$: tasksList = sortTasksByColumn($filteredTasks, sortingField, sortingDirection);
 </script>
 
 <div class="overflow-x-auto">
@@ -133,8 +98,8 @@
 				<th on:click={() => toggleSortingFieldAndDirection('priority')}>
 					<div class="flex flex-row">
 						Priority
-						{#if sortingField === 'priority'}
-							{#if sortingDirection === 'asc'}
+						{#if $taskSortingField === 'priority'}
+							{#if $taskSortingDirection === 'asc'}
 								<IconArrowUp class="ml-1 w-4 h-4" />
 							{:else}
 								<IconArrowDown class="ml-1 w-4 h-4" />
@@ -151,8 +116,8 @@
 				<th on:click={() => toggleSortingFieldAndDirection('urgency')}>
 					<div class="flex flex-row">
 						Urgency
-						{#if sortingField === 'urgency'}
-							{#if sortingDirection === 'asc'}
+						{#if $taskSortingField === 'urgency'}
+							{#if $taskSortingDirection === 'asc'}
 								<IconArrowUp class="ml-1 w-4 h-4" />
 							{:else}
 								<IconArrowDown class="ml-1 w-4 h-4" />
@@ -166,7 +131,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each tasksList as task}
+			{#each $filteredTasks as task}
 				<!-- <tr class={updateRowClass(task)} id={task.uuid} on:click={() => selectTask(task)}> -->
 				<tr class={updateRowClass(task)} id={task.uuid}>
 					<td>
