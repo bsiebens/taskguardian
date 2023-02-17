@@ -6,10 +6,13 @@
 	import { invalidate } from '$app/navigation';
 	import { getNotificationsContext } from 'svelte-notifications';
 	import { enhance } from '$app/forms';
+	import TaskAnnotationFormModal from './TaskAnnotationFormModal.svelte';
 
 	import type { Task } from 'taskwarrior-lib';
 
 	let selectedTask: Task | undefined = undefined;
+	let annotationTaskModalOpen: boolean = false;
+	let formTaskModalOpen: boolean = false;
 
 	const { addNotification } = getNotificationsContext();
 	
@@ -81,9 +84,16 @@
 		}
 	}
 
+	function showTaskAnnotationModal(task: Task) {
+		selectedTask = task;
+		annotationTaskModalOpen = true;
+	}
+
 	// Remove task when filter changes (as otherwise the table does not update properly)
 	$: $taskFilter, removeSelectedTask();
 </script>
+
+<TaskAnnotationFormModal task={selectedTask} bind:isModalOpen={annotationTaskModalOpen}/>
 
 <div class="overflow-x-auto">
 	<table class="table w-full">
@@ -157,8 +167,19 @@
 					<td class="whitespace-normal">
 						{task.description}
 
+						{#if task.annotations!= undefined && task.annotations.length > 0}
+							<div>
+								{#each task.annotations as annotation}
+									<div class="ml-4 flex flex-row gap-x-4 text-sm">
+										<div class="min-w-fit font-semibold">{moment(convertTaskwarriorDateToISO8601Format(annotation.entry)).fromNow()}</div>
+										<div class="text-justify">{annotation.description}</div>
+									</div>
+								{/each}
+							</div>
+						{/if}
+
 						{#if task.tags != undefined && (task.tags.length > 0 || (task.status === 'pending' && task.scheduled != undefined))}
-							<div class="flex flex-row gap-x-1">
+							<div class="flex flex-row gap-x-1 mt-1">
 								{#each task.tags as tag}
 									<div class="badge-secondary badge gap-2 text-secondary-content">
 										<IconTag class="h-4 w-4" />
@@ -220,7 +241,7 @@
 								<button type='submit' formaction='?/delete' class='btn btn-ghost btn-sm'><IconTrashOff /></button>
 							{:else}
 								<button class='btn btn-ghost btn-sm'><IconPencil /></button>
-								<button class='btn btn-ghost btn-sm'><IconPlaylistAdd /></button>
+								<label class='btn btn-ghost btn-sm' on:click={() => showTaskAnnotationModal(task)}><IconPlaylistAdd /></label>
 								<button type='submit' formaction='?/complete' class='btn btn-ghost btn-sm'><IconCheck /></button>
 								<button type='submit' formaction='?/delete' class='btn btn-ghost btn-sm'><IconTrash /></button>
 							{/if}

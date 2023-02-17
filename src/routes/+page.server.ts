@@ -1,6 +1,7 @@
 import { TaskwarriorLib } from "taskwarrior-lib";
 
 import type { PageServerLoad, Actions } from "./$types";
+import type { TaskAnnotation } from "taskwarrior-lib";
 
 const taskwarrior = new TaskwarriorLib();
 
@@ -42,7 +43,25 @@ export const actions = {
         return { heading: 'Task updated', type: 'success', message: 'Task marked as ' + task.status};
     },
     annotate: async ({ request }) => {
+        const data = await request.formData();
+        let task = taskwarrior.load(data.get('id'))[0];
 
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000;
+        var localISOTime = (new Date(Date.now() - tzoffset)).toISOString();
+        let annotation: TaskAnnotation = {
+            entry: localISOTime,
+            description: data.get('annotation'),
+        }
+
+        if (task.annotations === undefined) {
+            task.annotations = [annotation];
+        } else {
+            task.annotations.push(annotation);
+        }
+
+        taskwarrior.update([task]);
+
+        return { heading: 'Task updated', type: 'success', message: 'Annotation added to task' };
     },
     edit: async ({ request }) => {
 
