@@ -7,6 +7,7 @@
 	import { getNotificationsContext } from 'svelte-notifications';
 	import { enhance } from '$app/forms';
 	import TaskAnnotationFormModal from './TaskAnnotationFormModal.svelte';
+	import TaskFormModal from './TaskFormModal.svelte';
 
 	import type { Task } from 'taskwarrior-lib';
 
@@ -89,11 +90,17 @@
 		annotationTaskModalOpen = true;
 	}
 
+	function showTaskFormModal(task: Task) {
+		selectedTask = task;
+		formTaskModalOpen = true;
+	}
+
 	// Remove task when filter changes (as otherwise the table does not update properly)
 	$: $taskFilter, removeSelectedTask();
 </script>
 
 <TaskAnnotationFormModal task={selectedTask} bind:isModalOpen={annotationTaskModalOpen}/>
+<TaskFormModal task={selectedTask} bind:isModalOpen={formTaskModalOpen} modalID={"editTask"} />
 
 <div class="overflow-x-auto">
 	<table class="table w-full">
@@ -240,7 +247,7 @@
 							{:else if task.status === 'deleted'}
 								<button type='submit' formaction='?/delete' class='btn btn-ghost btn-sm'><IconTrashOff /></button>
 							{:else}
-								<button class='btn btn-ghost btn-sm'><IconPencil /></button>
+								<label class='btn btn-ghost btn-sm' on:click={() => showTaskFormModal(task)}><IconPencil /></label>
 								<label class='btn btn-ghost btn-sm' on:click={() => showTaskAnnotationModal(task)}><IconPlaylistAdd /></label>
 								<button type='submit' formaction='?/complete' class='btn btn-ghost btn-sm'><IconCheck /></button>
 								<button type='submit' formaction='?/delete' class='btn btn-ghost btn-sm'><IconTrash /></button>
