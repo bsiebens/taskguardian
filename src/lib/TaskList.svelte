@@ -3,10 +3,15 @@
 	import moment from 'moment';
 	import { filteredTasks, pendingTasks, taskFilter, taskSortingField, taskSortingDirection } from './stores';
 	import { convertTaskwarriorDateToISO8601Format } from './utils';
+	import { invalidate } from '$app/navigation';
+	import { getNotificationsContext } from 'svelte-notifications';
+	import { enhance } from '$app/forms';
 
 	import type { Task } from 'taskwarrior-lib';
 
 	let selectedTask: Task | undefined = undefined;
+
+	const { addNotification } = getNotificationsContext();
 	
 	function selectTask(task: Task) {
 		if (selectedTask != undefined && selectedTask.uuid != undefined) {
@@ -194,17 +199,32 @@
 					</td>
 					<td>{task.urgency}</td>
 					<td>
-						{#if task.status === 'completed'}
-							<button class='btn btn-ghost btn-sm'><IconArrowBackUp /></button>
-							<button class='btn btn-ghost btn-sm'><IconTrash /></button>
-						{:else if task.status === 'deleted'}
-							<button class='btn btn-ghost btn-sm'><IconTrashOff /></button>
-						{:else}
-							<button class='btn btn-ghost btn-sm'><IconPencil /></button>
-							<button class='btn btn-ghost btn-sm'><IconPlaylistAdd /></button>
-							<button class='btn btn-ghost btn-sm'><IconCheck /></button>
-							<button class='btn btn-ghost btn-sm'><IconTrash /></button>
-						{/if}
+						<form method="post" action='?/form' use:enhance={({ form, data, action, cancel }) => {
+							return async ({ result, update }) => {
+								addNotification({
+									description: result.data.message,
+									type: result.data.type,
+									heading: result.data.heading,
+									position: 'bottom-center',
+									removeAfter: 10 * 1000
+								});
+								await invalidate('taskwarrior:data');
+							}
+						}}>
+							<input type='hidden' value={task.uuid} name='id' />
+
+							{#if task.status === 'completed'}
+								<button type='submit' formaction='?/complete' class='btn btn-ghost btn-sm'><IconArrowBackUp /></button>
+								<button type='submit' formaction='?/delete' class='btn btn-ghost btn-sm'><IconTrash /></button>
+							{:else if task.status === 'deleted'}
+								<button type='submit' formaction='?/delete' class='btn btn-ghost btn-sm'><IconTrashOff /></button>
+							{:else}
+								<button class='btn btn-ghost btn-sm'><IconPencil /></button>
+								<button class='btn btn-ghost btn-sm'><IconPlaylistAdd /></button>
+								<button type='submit' formaction='?/complete' class='btn btn-ghost btn-sm'><IconCheck /></button>
+								<button type='submit' formaction='?/delete' class='btn btn-ghost btn-sm'><IconTrash /></button>
+							{/if}
+						</form>
 					</td>
 				</tr>
 			{/each}

@@ -1,4 +1,3 @@
-import type { satisfies } from "semver";
 import { TaskwarriorLib } from "taskwarrior-lib";
 
 import type { PageServerLoad, Actions } from "./$types";
@@ -34,7 +33,13 @@ export const actions = {
         return { heading: 'Task updated', type: 'success', message: 'Task marked as ' + task.status};
     },
     delete: async ({ request }) => {
+        const data = await request.formData();
+        let task = taskwarrior.load(data.get('id'))[0];
 
+        task.status = task.status === 'deleted' ? 'pending' : 'deleted';
+        taskwarrior.update([task]);
+
+        return { heading: 'Task updated', type: 'success', message: 'Task marked as ' + task.status};
     },
     annotate: async ({ request }) => {
 
