@@ -1,90 +1,56 @@
-import { TaskwarriorLib, Task } from "taskwarrior-lib"
-import { convertTaskwarriorDateToISO8601Format } from '../lib/utilities'
+import { TaskwarriorLib } from "taskwarrior-lib";
 
-const taskwarrior = new TaskwarriorLib()
+import type { PageServerLoad, Actions } from "./$types";
+import type { TaskAnnotation, Task } from "taskwarrior-lib";
 
-export function load() {
-    const tasks = taskwarrior.load()
-    const pendingTasks = tasks.filter(function (task) {
-        return task.status === 'pending'
-    }).map(task => task.uuid)
+const taskwarrior = new TaskwarriorLib();
+
+export const load = (async ({ depends }) => {
+    depends('taskwarrior:data');
 
     return {
-        tasks: {
-            all: tasks,
-            pending: pendingTasks,
-            next: tasks.filter(function (task) {
-                if (task.status != 'pending') return false
-                if (task.wait === undefined) return true
-                // @ts-ignore
-                return new Date(convertTaskwarriorDateToISO8601Format(task.wait)) <= new Date()
-            }),
-            later: tasks.filter(function (task) {
-                if (task.status != 'pending') return false
-                if (task.wait === undefined) return false
-                // @ts-ignore
-                return new Date(convertTaskwarriorDateToISO8601Format(task.wait)) > new Date()
-            }),
-            recurring: tasks.filter(function (task) { return task.status === 'recurring' }),
-            completed: tasks.filter(function (task) { return task.status === 'completed' }),
-            deleted: tasks.filter(function (task) { return task.status === 'deleted' })
-        }
+        tasks: taskwarrior.load()
     }
-}
+}) satisfies PageServerLoad;
 
 export const actions = {
     sync: async () => {
         try {
             taskwarrior.executeCommand('sync');
-            return { heading: 'Sync status', type: 'success', message: 'Synced succesfully with taskserver' }
+            return {
+                heading: 'Sync status', type: 'success', message: 'Synced succesfully with taskserver'
+            }
         } catch (error) {
             return { heading: 'Sync status', type: 'error', message: 'Sync could not be executed: ' + error }
         }
     },
-    completed: async ({ request }) => {
+    complete: async ({ request }) => {
         const data = await request.formData();
         let task = taskwarrior.load(data.get('id'))[0];
 
-        task.status = 'completed';
+        task.status = task.status === 'pending' ? 'completed' : 'pending';
         taskwarrior.update([task]);
 
-        return { heading: 'Task marked as completed', type: 'success', message: task.description };
+        return { heading: 'Task updated', type: 'success', message: 'Task "' + task.description + '" marked as ' + task.status};
     },
-    incompleted: async ({ request }) => {
+    delete: async ({ request }) => {
         const data = await request.formData();
         let task = taskwarrior.load(data.get('id'))[0];
 
-        task.status = 'pending';
+        task.status = task.status === 'deleted' ? 'pending' : 'deleted';
         taskwarrior.update([task]);
 
-        return { heading: 'Task marked as incompleted', type: 'success', message: task.description };
-    },
-    deleted: async ({ request }) => {
-        const data = await request.formData();
-        let task = taskwarrior.load(data.get('id'))[0];
-
-        task.status = 'deleted';
-        taskwarrior.update([task]);
-
-        return { heading: 'Task deleted', type: 'success', message: task.description };
-    },
-    restored: async ({ request }) => {
-        const data = await request.formData();
-        let task = taskwarrior.load(data.get('id'))[0];
-
-        task.status = 'pending';
-        taskwarrior.update([task]);
-
-        return { heading: 'Task restored', type: 'success', message: task.description };
+        return { heading: 'Task updated', type: 'success', message: 'Task "' + task.description + '" marked as ' + task.status};
     },
     annotate: async ({ request }) => {
         const data = await request.formData();
         let task = taskwarrior.load(data.get('id'))[0];
-        var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000;
         var localISOTime = (new Date(Date.now() - tzoffset)).toISOString();
-        let annotation = {
+        let annotation: TaskAnnotation = {
             entry: localISOTime,
-            description: data.get('annotation')
+            description: data.get('annotation'),
         }
 
         if (task.annotations === undefined) {
@@ -94,11 +60,12 @@ export const actions = {
         }
 
         taskwarrior.update([task]);
-        return { heading: 'Annotation added', type: "success", message: task.description };
+
+        return { heading: 'Task updated', type: 'success', message: 'Annotation added to task' };
     },
-    update: async ({ request }) => {
+    edit: async ({ request }) => {
         const data = await request.formData();
-        let task = {};
+        let task: Task = {};
 
         if (data.get('id') === null) {
             task = {
@@ -129,12 +96,12 @@ export const actions = {
             taskwarrior.update([task]);
 
             if (data.get('id') === null) {
-                return { heading: 'Task created', type: 'success', message: 'Task ' + task.description + ' added' };
+                return { heading: 'Task created', type: 'success', message: 'Task "' + task.description + '" added' };
             } else {
-                return { heading: 'Task updated', type: 'success', message: 'Task ' + task.description + ' updated' };
+                return { heading: 'Task updated', type: 'success', message: 'Task "' + task.description + '" updated' };
             }
         } catch (error) {
             return { heading: 'Task creation error', type: 'error', message: 'Error: ' + error };
         }
     }
-}
+} satisfies Actions;
