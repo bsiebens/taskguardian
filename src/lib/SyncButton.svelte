@@ -1,6 +1,4 @@
 <script lang="ts">
-	//@ts-nocheck
-
 	import { getNotificationsContext } from 'svelte-notifications';
 	import { enhance } from '$app/forms';
 	import { invalidate } from '$app/navigation';
