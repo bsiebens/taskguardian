@@ -1,49 +1,42 @@
-<script>
-	import { activeTab } from './stores';
-	import { IconPlayerPlay, IconClockHour2, IconRepeat, IconCheckbox, IconTrash, IconCircleDashed } from '@tabler/icons-svelte';
+<script lang="ts">
+	import { IconCheckbox, IconClockHour2, IconInbox, IconPlayerPlay, IconRepeat, IconTrash } from '@tabler/icons-svelte';
+	import { taskFilter, inboxTaskCount } from './stores';
 
-	/**
-	 * @type {string}
-	 */
-	export let tabName;
+	import type { ComponentType } from 'svelte';
 
-	function setActiveTab() {
-		$activeTab = tabName;
+	export let buttonName: string;
+	const buttonNameToIcon: { [buttonName: string]: ComponentType } = {
+		next: IconPlayerPlay,
+		later: IconClockHour2,
+		recurring: IconRepeat,
+		completed: IconCheckbox,
+		deleted: IconTrash,
+		inbox: IconInbox
+	};
+
+	function markActive() {
+		taskFilter.set(buttonName);
 	}
+
+	$: buttonNameIcon = buttonNameToIcon[buttonName];
 </script>
 
-{#if $activeTab === tabName}
-	<a class="tab tab-active grow lg:tab-bordered" href="/" on:click={setActiveTab}>
-		{#if tabName === 'next'}
-			<IconPlayerPlay class="mr-2" />
-		{:else if tabName === 'later'}
-			<IconClockHour2 class="mr-2" />
-		{:else if tabName === 'recurring'}
-			<IconRepeat class="mr-2" />
-		{:else if tabName === 'completed'}
-			<IconCheckbox class="mr-2" />
-		{:else if tabName === 'deleted'}
-			<IconTrash class="mr-2" />
-		{:else}
-			<IconCircleDashed class="mr-2" />
+{#if $taskFilter === buttonName}
+	<a class="tab tab-active grow lg:tab-bordered" href="/" on:click={markActive}>
+		<svelte:component this={buttonNameIcon} />
+		<span class="ml-2 uppercase">{buttonName}</span>
+
+		{#if buttonName === 'inbox'}
+			<span class="badge-primary badge ml-1">{$inboxTaskCount}</span>
 		{/if}
-		<span class="uppercase">{tabName}</span>
 	</a>
 {:else}
-	<a class="tab grow lg:tab-bordered" href="/" on:click={setActiveTab}>
-		{#if tabName === 'next'}
-			<IconPlayerPlay class="mr-2" />
-		{:else if tabName === 'later'}
-			<IconClockHour2 class="mr-2" />
-		{:else if tabName === 'recurring'}
-			<IconRepeat class="mr-2" />
-		{:else if tabName === 'completed'}
-			<IconCheckbox class="mr-2" />
-		{:else if tabName === 'deleted'}
-			<IconTrash class="mr-2" />
-		{:else}
-			<IconCircleDashed class="mr-2" />
+	<a class="tab grow lg:tab-bordered" href="/" on:click={markActive}>
+		<svelte:component this={buttonNameIcon} />
+		<span class="ml-2 uppercase">{buttonName}</span>
+
+		{#if buttonName === 'inbox'}
+			<span class="badge-primary badge ml-1">{$inboxTaskCount}</span>
 		{/if}
-		<span class="uppercase">{tabName}</span>
 	</a>
 {/if}

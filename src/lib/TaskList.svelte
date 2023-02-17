@@ -1,39 +1,65 @@
-<script>
+<script lang="ts">
+	import { IconAlertCircle, IconAlertTriangle, IconCheckbox, IconLock, IconPlayerPlay, IconTag, IconTrash, IconArrowsSort, IconArrowUp, IconArrowDown, IconPencil, IconPlaylistAdd, IconCheck, IconArrowBackUp, IconTrashOff } from '@tabler/icons-svelte';
 	import moment from 'moment';
-	import { createRender, createTable, Render, Subscribe } from 'svelte-headless-table';
-	import { IconArrowDown, IconArrowsSort, IconArrowUp } from '@tabler/icons-svelte';
-	import { addSortBy } from 'svelte-headless-table/plugins';
-	import { tasks, projects } from './stores';
-	import { convertTaskwarriorDateToISO8601Format } from './utilities';
-	import TaskIcons from './TaskIcons.svelte';
-	import TaskDescription from './TaskDescription.svelte';
-	import TaskActions from './TaskActions.svelte';
+	import { filteredTasks, pendingTasks, taskFilter, taskSortingField, taskSortingDirection } from './stores';
+	import { convertTaskwarriorDateToISO8601Format } from './utils';
+	import { invalidate } from '$app/navigation';
+	import { getNotificationsContext } from 'svelte-notifications';
+	import { enhance } from '$app/forms';
+	import TaskAnnotationFormModal from './TaskAnnotationFormModal.svelte';
+	import TaskFormModal from './TaskFormModal.svelte';
 
-	/**
-	 * @type {[]}
-	 */
-	export let pendingTasks;
+	import type { Task } from 'taskwarrior-lib';
 
-	const priorityToScore = { undefined: 0, L: 1, M: 2, H: 3 };
+	let selectedTask: Task | undefined = undefined;
+	let annotationTaskModalOpen: boolean = false;
+	let formTaskModalOpen: boolean = false;
 
-	/**
-	 * @param {string | undefined} date_string
-	 */
-	function formatDateToRelativeDate(date_string) {
-		if (date_string === undefined) return '';
-		return moment(convertTaskwarriorDateToISO8601Format(date_string)).fromNow();
+	const { addNotification } = getNotificationsContext();
+	
+	function selectTask(task: Task) {
+		if (selectedTask != undefined && selectedTask.uuid != undefined) {
+			document.getElementById(selectedTask.uuid)?.classList.toggle('active');
+		}
+
+		if (task.uuid != undefined) {
+			document.getElementById(task.uuid)?.classList.toggle('active');
+		}
+
+		selectedTask = task;
 	}
 
-	/**
-	 * @param {import('taskwarrior-lib').Task} task
-	 * @param {string | any[]} pendingTasks
-	 */
-	function isTaskBlocked(task, pendingTasks) {
+	function removeSelectedTask() {
+		if (selectedTask != undefined && selectedTask.uuid != undefined) {
+			document.getElementById(selectedTask.uuid)?.classList.toggle('active');
+		}
+		selectedTask = undefined;
+	}
+
+	function isTaskOverDue(task: Task) {
+		if (task.status === 'completed') return false;
+		if (task.status === 'deleted') return false;
+
+		// @ts-ignore
+		return new Date(convertTaskwarriorDateToISO8601Format(task.due)) < new Date();
+	}
+
+	function isTaskDueInNext24Hours(task: Task) {
+		if (task.status === 'completed') return false;
+		if (task.status === 'deleted') return false;
+
+		return (
+			// @ts-ignore
+			new Date(convertTaskwarriorDateToISO8601Format(task.due)) - new Date() <= 24 * 60 * 60 * 1000
+		);
+	}
+
+	export function isTaskBlocked(task: Task) {
 		if (task.depends === undefined) return false;
 
 		let blocked = false;
 		task.depends.forEach((dependency) => {
-			if (pendingTasks.includes(dependency)) {
+			if ($pendingTasks.includes(dependency)) {
 				blocked = true;
 			}
 		});
@@ -41,121 +67,194 @@
 		return blocked;
 	}
 
-	/**
-	 * @param {import('taskwarrior-lib').Task} task
-	 */
-	function defineTaskIcons(task) {
-		if (task.status === 'deleted') return '<i class="fa-solid fa-trash" />';
-
-		return 'bla';
-	}
-
-	/**
-	 * @param {import('taskwarrior-lib').Task} task
-	 */
-	function defineRowClass(task) {
+	function updateRowClass(task: Task) {
 		if (task.status === 'completed' || task.status === 'deleted' || task.status === 'recurring') return 'hover';
-		if (isTaskBlocked(task, pendingTasks)) return 'hover text-neutral-content [&>*]:bg-neutral hover:text-base-content';
-		// @ts-ignore
-		if (new Date(convertTaskwarriorDateToISO8601Format(task.due)) <= new Date()) return 'hover text-error-content [&>*]:bg-error hover:text-base-content';
-		// @ts-ignore
-		if (new Date(convertTaskwarriorDateToISO8601Format(task.due)) - new Date() <= 24 * 60 * 60 * 1000) return 'hover text-warning-content [&>*]:bg-warning hover:text-base-content';
-
+		if (isTaskBlocked(task)) return 'hover text-neutral-content [&>*]:bg-neutral hover:text-base-content';
+		if (isTaskOverDue(task)) return 'hover text-error-content [&>*]:bg-error hover:text-base-content';
+		if (isTaskDueInNext24Hours(task)) return 'hover text-warning-content [&>*]:bg-warning hover:text-base-content';
+		
 		return 'hover';
 	}
 
-	const table = createTable(tasks, {
-		sort: addSortBy({ initialSortKeys: [{ id: 'urgency', order: 'desc' }] })
-	});
+	function toggleSortingFieldAndDirection(field: "urgency" | "priority") {
+		if (field === $taskSortingField) {
+			$taskSortingDirection = $taskSortingDirection === 'asc' ? 'desc' : 'asc';
+		} else {
+			$taskSortingField = field;
+			$taskSortingDirection = 'asc';
+		}
+	}
 
-	const columns = table.createColumns([
-		table.display({
-			header: '',
-			id: 'icons',
-			cell: ({ row }) => createRender(TaskIcons, { task: row.original, pendingTasks: pendingTasks })
-		}),
-		table.column({
-			header: 'Description',
-			accessor: 'description',
-			cell: ({ row }) => createRender(TaskDescription, { task: row.original }),
-			plugins: { sort: { disable: true } }
-		}),
-		table.column({
-			header: 'Project',
-			accessor: 'project',
-			cell: ({ value }) => (value === undefined ? '' : value.replace('.', ' / '))
-		}),
-		table.column({
-			header: 'Priority',
-			accessor: 'priority',
-			cell: ({ value }) => (value === undefined ? '' : value),
-			plugins: { sort: { getSortValue: (item) => priorityToScore[item] } }
-		}),
-		table.column({
-			header: 'Due',
-			accessor: 'due',
-			cell: ({ value }) => formatDateToRelativeDate(value),
-			plugins: { sort: { getSortValue: (item) => new Date(convertTaskwarriorDateToISO8601Format(item, -1)).getTime() } }
-		}),
-		table.column({
-			header: 'Wait',
-			accessor: 'wait',
-			cell: ({ value }) => formatDateToRelativeDate(value),
-			plugins: { sort: { getSortValue: (item) => new Date(convertTaskwarriorDateToISO8601Format(item, -1)).getTime() } }
-		}),
-		table.column({
-			header: 'Urgency',
-			accessor: 'urgency'
-		}),
-		table.display({
-			header: '',
-			id: 'actions',
-			cell: ({ row }) => createRender(TaskActions, { task: row.original })
-		})
-	]);
+	function showTaskAnnotationModal(task: Task) {
+		selectedTask = task;
+		annotationTaskModalOpen = true;
+	}
 
-	const { headerRows, rows, tableAttrs, tableBodyAttrs } = table.createViewModel(columns);
+	function showTaskFormModal(task: Task) {
+		selectedTask = task;
+		formTaskModalOpen = true;
+	}
+
+	// Remove task when filter changes (as otherwise the table does not update properly)
+	$: $taskFilter, removeSelectedTask();
 </script>
 
+<TaskAnnotationFormModal task={selectedTask} bind:isModalOpen={annotationTaskModalOpen}/>
+<TaskFormModal task={selectedTask} bind:isModalOpen={formTaskModalOpen} modalID={"editTask"} />
+
 <div class="overflow-x-auto">
-	<table {...$tableAttrs} class="table w-full">
+	<table class="table w-full">
 		<thead>
-			{#each $headerRows as headerRow (headerRow.id)}
-				<Subscribe rowAttrs={headerRow.attrs()} let:rowAttrs>
-					<tr {...rowAttrs}>
-						{#each headerRow.cells as cell (cell.id)}
-							<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
-								<th {...attrs} on:click={props.sort.toggle}>
-									<div class="flex flex-row items-center">
-										<Render of={cell.render()} />
-										{#if props.sort.order === 'asc'}
-											<IconArrowUp class="ml-1" />
-										{:else if props.sort.order === 'desc'}
-											<IconArrowDown class="ml-1" />
-										{:else if ['Project', 'Priority', 'Due', 'Wait', 'Urgency'].includes(cell.label)}
-											<IconArrowsSort class="ml-1" />
-										{/if}
-									</div>
-								</th>
-							</Subscribe>
-						{/each}
-					</tr>
-				</Subscribe>
-			{/each}
+			<tr>
+				<th />
+				<th>Description</th>
+				<th>Project</th>
+				<th on:click={() => toggleSortingFieldAndDirection('priority')}>
+					<div class="flex flex-row">
+						Priority
+						{#if $taskSortingField === 'priority'}
+							{#if $taskSortingDirection === 'asc'}
+								<IconArrowUp class="ml-1 w-4 h-4" />
+							{:else}
+								<IconArrowDown class="ml-1 w-4 h-4" />
+							{/if}
+						{:else}
+							<IconArrowsSort class="ml-1 w-4 h-4 text-base-300" />
+						{/if}
+					</div>
+				</th>
+				{#if $taskFilter != 'next'}
+					<th>Wait</th>
+				{/if}
+				<th>Due</th>
+				<th on:click={() => toggleSortingFieldAndDirection('urgency')}>
+					<div class="flex flex-row">
+						Urgency
+						{#if $taskSortingField === 'urgency'}
+							{#if $taskSortingDirection === 'asc'}
+								<IconArrowUp class="ml-1 w-4 h-4" />
+							{:else}
+								<IconArrowDown class="ml-1 w-4 h-4" />
+							{/if}
+						{:else}
+							<IconArrowsSort class="ml-1 w-4 h-4 text-base-300" />
+						{/if}
+					</div>
+				</th>
+				<th />
+			</tr>
 		</thead>
-		<tbody {...$tableBodyAttrs}>
-			{#each $rows as row (row.id)}
-				<Subscribe rowAttrs={row.attrs()} let:rowAttrs>
-					<tr {...rowAttrs} class={defineRowClass(row.original)}>
-						{#each row.cells as cell (cell.id)}
-							<Subscribe attrs={cell.attrs()} let:attrs>
-								<td {...attrs}>
-									<Render of={cell.render()} />
-								</td>
-							</Subscribe>
-						{/each}
-					</tr>
-				</Subscribe>
+		<tbody>
+			{#each $filteredTasks as task}
+				<!-- <tr class={updateRowClass(task)} id={task.uuid} on:click={() => selectTask(task)}> -->
+				<tr class={updateRowClass(task)} id={task.uuid}>
+					<td>
+						{#if $taskFilter != 'recurring'}
+							<div class="flex flex-row">
+								{#if task.status === 'completed' || task.status === 'deleted'}
+									{#if task.status === 'completed'}
+										<IconCheckbox class="text-success" />
+									{:else}
+										<IconTrash class="text-error" />
+									{/if}
+								{:else}
+									{#if isTaskOverDue(task)}
+										<IconAlertCircle />
+									{:else if isTaskDueInNext24Hours(task)}
+										<IconAlertTriangle />
+									{/if}
+
+									{#if isTaskBlocked(task)}
+										<IconLock />
+									{/if}
+								{/if}
+							</div>
+						{/if}
+					</td>
+					<td class="whitespace-normal">
+						{task.description}
+
+						{#if task.annotations!= undefined && task.annotations.length > 0}
+							<div>
+								{#each task.annotations as annotation}
+									<div class="ml-4 flex flex-row gap-x-4 text-sm">
+										<div class="min-w-fit font-semibold">{moment(convertTaskwarriorDateToISO8601Format(annotation.entry)).fromNow()}</div>
+										<div class="text-justify">{annotation.description}</div>
+									</div>
+								{/each}
+							</div>
+						{/if}
+
+						{#if task.tags != undefined && (task.tags.length > 0 || (task.status === 'pending' && task.scheduled != undefined))}
+							<div class="flex flex-row gap-x-1 mt-1">
+								{#each task.tags as tag}
+									<div class="badge-secondary badge gap-2 text-secondary-content">
+										<IconTag class="h-4 w-4" />
+										{tag}
+									</div>
+								{/each}
+
+								{#if task.status == 'pending' && task.scheduled != undefined}
+									<div class="badge-accent badge gap-2 text-accent-content">
+										<IconPlayerPlay class="h-4 w-4" />
+										{moment(convertTaskwarriorDateToISO8601Format(task.scheduled)).fromNow()}
+									</div>
+								{/if}
+							</div>
+						{/if}
+					</td>
+					<td>
+						{#if task.project != undefined}
+							{task.project.replace('.', ' / ')}
+						{/if}
+					</td>
+					<td>
+						{#if task.priority != undefined}
+							{task.priority}
+						{/if}
+					</td>
+					{#if $taskFilter != 'next'}
+						<td>
+							{#if task.wait != undefined}
+								{moment(convertTaskwarriorDateToISO8601Format(task.wait)).fromNow()}
+							{/if}
+						</td>
+					{/if}
+					<td>
+						{#if task.due != undefined}
+							{moment(convertTaskwarriorDateToISO8601Format(task.due)).fromNow()}
+						{/if}
+					</td>
+					<td>{task.urgency}</td>
+					<td>
+						<form method="post" action='?/form' use:enhance={({ form, data, action, cancel }) => {
+							return async ({ result, update }) => {
+								addNotification({
+									description: result.data.message,
+									type: result.data.type,
+									heading: result.data.heading,
+									position: 'bottom-center',
+									removeAfter: 10 * 1000
+								});
+								await invalidate('taskwarrior:data');
+							}
+						}}>
+							<input type='hidden' value={task.uuid} name='id' />
+
+							{#if task.status === 'completed'}
+								<button type='submit' formaction='?/complete' class='btn btn-ghost btn-sm'><IconArrowBackUp /></button>
+								<button type='submit' formaction='?/delete' class='btn btn-ghost btn-sm'><IconTrash /></button>
+							{:else if task.status === 'deleted'}
+								<button type='submit' formaction='?/delete' class='btn btn-ghost btn-sm'><IconTrashOff /></button>
+							{:else}
+								<label class='btn btn-ghost btn-sm' on:click={() => showTaskFormModal(task)}><IconPencil /></label>
+								<label class='btn btn-ghost btn-sm' on:click={() => showTaskAnnotationModal(task)}><IconPlaylistAdd /></label>
+								<button type='submit' formaction='?/complete' class='btn btn-ghost btn-sm'><IconCheck /></button>
+								<button type='submit' formaction='?/delete' class='btn btn-ghost btn-sm'><IconTrash /></button>
+							{/if}
+						</form>
+					</td>
+				</tr>
 			{/each}
 		</tbody>
 	</table>
