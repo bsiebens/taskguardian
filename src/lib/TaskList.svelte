@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { IconAlertCircle, IconAlertTriangle, IconCheckbox, IconLock, IconPlayerPlay, IconTag, IconTrash, IconArrowsSort, IconArrowUp, IconArrowDown } from '@tabler/icons-svelte';
+	import { IconAlertCircle, IconAlertTriangle, IconCheckbox, IconLock, IconPlayerPlay, IconTag, IconTrash, IconArrowsSort, IconArrowUp, IconArrowDown, IconPencil, IconPlaylistAdd, IconCheck, IconArrowBackUp, IconTrashOff } from '@tabler/icons-svelte';
 	import moment from 'moment';
 	import { filteredTasks, pendingTasks, taskFilter, taskSortingField, taskSortingDirection } from './stores';
 	import { convertTaskwarriorDateToISO8601Format } from './utils';
@@ -8,9 +7,7 @@
 	import type { Task } from 'taskwarrior-lib';
 
 	let selectedTask: Task | undefined = undefined;
-	let sortingDirection = browser ? window.sessionStorage.getItem('sortingDirection') ?? 'desc' : 'desc';
-	let sortingField = browser ? window.sessionStorage.getItem('sortingField') ?? 'urgency' : 'urgency';
-
+	
 	function selectTask(task: Task) {
 		if (selectedTask != undefined && selectedTask.uuid != undefined) {
 			document.getElementById(selectedTask.uuid)?.classList.toggle('active');
@@ -64,14 +61,9 @@
 	function updateRowClass(task: Task) {
 		if (task.status === 'completed' || task.status === 'deleted' || task.status === 'recurring') return 'hover';
 		if (isTaskBlocked(task)) return 'hover text-neutral-content [&>*]:bg-neutral hover:text-base-content';
-		// @ts-ignore
-		if (new Date(convertTaskwarriorDateToISO8601Format(task.due)) <= new Date()) return 'hover text-error-content [&>*]:bg-error hover:text-base-content';
-		if (
-			// @ts-ignore
-			new Date(convertTaskwarriorDateToISO8601Format(task.due)) - new Date() <=
-			24 * 60 * 60 * 1000
-		)
-			return 'hover text-warning-content [&>*]:bg-warning hover:text-base-content';
+		if (isTaskOverDue(task)) return 'hover text-error-content [&>*]:bg-error hover:text-base-content';
+		if (isTaskDueInNext24Hours(task)) return 'hover text-warning-content [&>*]:bg-warning hover:text-base-content';
+		
 		return 'hover';
 	}
 
@@ -201,7 +193,19 @@
 						{/if}
 					</td>
 					<td>{task.urgency}</td>
-					<td>// ACTIONS //</td>
+					<td>
+						{#if task.status === 'completed'}
+							<button class='btn btn-ghost btn-sm'><IconArrowBackUp /></button>
+							<button class='btn btn-ghost btn-sm'><IconTrash /></button>
+						{:else if task.status === 'deleted'}
+							<button class='btn btn-ghost btn-sm'><IconTrashOff /></button>
+						{:else}
+							<button class='btn btn-ghost btn-sm'><IconPencil /></button>
+							<button class='btn btn-ghost btn-sm'><IconPlaylistAdd /></button>
+							<button class='btn btn-ghost btn-sm'><IconCheck /></button>
+							<button class='btn btn-ghost btn-sm'><IconTrash /></button>
+						{/if}
+					</td>
 				</tr>
 			{/each}
 		</tbody>
