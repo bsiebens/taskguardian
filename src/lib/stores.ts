@@ -3,7 +3,6 @@ import { convertTaskwarriorDateToISO8601Format } from "./utils";
 
 import type { Writable } from "svelte/store";
 import type { Task } from "taskwarrior-lib";
-import { comment } from "postcss";
 
 function sortByFieldAndDirection(taskList: Task[], sortingField: "priority" | "urgency", sortingDirection: "asc" | "desc" = "desc") {
     const priorityToScore = { "": 0, L: 1, M: 2, H: 3, undefined: 0 };
