@@ -36,7 +36,21 @@
 				{/if}
 			</h3>
 
-			<form method="post" class="space-y-2" action="?/update">
+			<form method="post" class="space-y-2" action="?/edit" use:enhance={({ form, data, action, cancel }) => {
+				return async ({ result, update }) => {
+					addNotification({
+						// @ts-ignore
+						description: result.data.message,
+						// @ts-ignore
+						type: result.data.type,
+						heading: result.data.heading,
+						position: 'bottom-center',
+						removeAfter: 10 * 1000
+					});
+					isModalOpen = false;
+					await invalidate('taskwarrior:data');
+				};
+			}}>
 				<input type="hidden" name="id" value={task.uuid} />
 
 				<div class="form-control w-full">
@@ -50,7 +64,7 @@
 					<label for="project" class="label font-semibold">
 						<span class="label-text">Project</span>
 					</label>
-					<input id="project" name="project" type="text" class="input-bordered input w-full" value={task.project} />
+					<input id="project" name="project" type="text" class="input-bordered input w-full" value={task.project === undefined ? '' : task.project} />
 				</div>
 
 				<div class="form-control w-full">

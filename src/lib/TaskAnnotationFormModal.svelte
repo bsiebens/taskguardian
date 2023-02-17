@@ -1,7 +1,7 @@
 <script lang='ts'>
 	import { getNotificationsContext } from 'svelte-notifications';
 	import { enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
+	import { invalidate } from '$app/navigation';
 
     import type { Task } from 'taskwarrior-lib';
 
@@ -34,7 +34,7 @@
                             removeAfter: 10 * 1000
                         });
                         isModalOpen = false;
-                        await invalidateAll();
+                        await invalidate('taskwarrior:data');
                     };
                 }}
             >
