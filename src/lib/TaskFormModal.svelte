@@ -49,26 +49,14 @@
 				<label for="description" class="label font-semibold">
 					<span class="label-text">Description</span>
 				</label>
-				<input
-					id="description"
-					name="description"
-					type="text"
-					class="input-bordered input w-full"
-					value={task.description}
-				/>
+				<input id="description" name="description" type="text" class="input-bordered input w-full" value={task.description} />
 			</div>
 
 			<div class="form-control w-full">
 				<label for="project" class="label font-semibold">
 					<span class="label-text">Project</span>
 				</label>
-				<input
-					id="project"
-					name="project"
-					type="text"
-					class="input-bordered input w-full"
-					value={task.project}
-				/>
+				<input id="project" name="project" type="text" class="input-bordered input w-full" value={task.project} />
 			</div>
 
 			<div class="form-control w-full">
@@ -83,52 +71,28 @@
 					<label for="due" class="label font-semibold">
 						<span class="label-text">Due</span>
 					</label>
-					<input
-						id="due"
-						name="due"
-						type="text"
-						class="input-bordered input w-full"
-						value={task.due}
-					/>
+					<input id="due" name="due" type="text" class="input-bordered input w-full" value={task.due} />
 				</div>
 
 				<div class="form-control w-full">
 					<label for="until" class="label font-semibold">
 						<span class="label-text">Until</span>
 					</label>
-					<input
-						id="until"
-						name="until"
-						type="text"
-						class="input-bordered input w-full"
-						value={task.until}
-					/>
+					<input id="until" name="until" type="text" class="input-bordered input w-full" value={task.until} />
 				</div>
 
 				<div class="form-control w-full">
 					<label for="scheduled" class="label font-semibold">
 						<span class="label-text">Scheduled</span>
 					</label>
-					<input
-						id="scheduled"
-						name="scheduled"
-						type="text"
-						class="input-bordered input w-full"
-						value={task.scheduled}
-					/>
+					<input id="scheduled" name="scheduled" type="text" class="input-bordered input w-full" value={task.scheduled} />
 				</div>
 
 				<div class="form-control w-full">
 					<label for="wait" class="label font-semibold">
 						<span class="label-text">Wait</span>
 					</label>
-					<input
-						id="wait"
-						name="wait"
-						type="text"
-						class="input-bordered input w-full"
-						value={task.wait}
-					/>
+					<input id="wait" name="wait" type="text" class="input-bordered input w-full" value={task.wait} />
 				</div>
 			</div>
 
@@ -141,14 +105,7 @@
 				</div>
 
 				<div class="form-control col-span-5 w-full">
-					<input
-						id="period"
-						name="period"
-						type="text"
-						placeholder="Period"
-						class="input-bordered input w-full"
-						value={task.recur}
-					/>
+					<input id="period" name="period" type="text" placeholder="Period" class="input-bordered input w-full" value={task.recur} />
 				</div>
 			</div>
 
@@ -157,13 +114,7 @@
 				<div class="flex flex-row">
 					<div class="form-control w-full">
 						<label for="none" class="label cursor-pointer justify-start">
-							<input
-								type="radio"
-								name="priority"
-								class="radio"
-								value=""
-								checked={checkedPrioNone}
-							/>
+							<input type="radio" name="priority" class="radio" value="" checked={checkedPrioNone} />
 							<span class="label-text ml-2">No priority</span>
 						</label>
 					</div>

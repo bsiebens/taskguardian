@@ -40,7 +40,7 @@
 		<div class="flex flex-col items-center lg:flex-row">
 			<div class="mb-4 flex-auto lg:mb-0">
 				<div class="tabs justify-center lg:justify-start">
-					<TabButton buttonName={'inbox'} />
+					<!-- <TabButton buttonName={'inbox'} /> -->
 					<TabButton buttonName={'next'} />
 					<TabButton buttonName={'later'} />
 					<TabButton buttonName={'recurring'} />

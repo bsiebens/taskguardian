@@ -1,17 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import {
-		IconAlertCircle,
-		IconAlertTriangle,
-		IconCheckbox,
-		IconLock,
-		IconPlayerPlay,
-		IconTag,
-		IconTrash,
-		IconArrowsSort,
-		IconArrowUp,
-		IconArrowDown
-	} from '@tabler/icons-svelte';
+	import { IconAlertCircle, IconAlertTriangle, IconCheckbox, IconLock, IconPlayerPlay, IconTag, IconTrash, IconArrowsSort, IconArrowUp, IconArrowDown } from '@tabler/icons-svelte';
 	import moment from 'moment';
 	import { filteredTasks, pendingTasks, taskFilter } from './stores';
 	import { convertTaskwarriorDateToISO8601Format } from './utils';
@@ -19,12 +8,8 @@
 	import type { Task } from 'taskwarrior-lib';
 
 	let selectedTask: Task | undefined = undefined;
-	let sortingDirection = browser
-		? window.sessionStorage.getItem('sortingDirection') ?? 'desc'
-		: 'desc';
-	let sortingField = browser
-		? window.sessionStorage.getItem('sortingField') ?? 'urgency'
-		: 'urgency';
+	let sortingDirection = browser ? window.sessionStorage.getItem('sortingDirection') ?? 'desc' : 'desc';
+	let sortingField = browser ? window.sessionStorage.getItem('sortingField') ?? 'urgency' : 'urgency';
 
 	function selectTask(task: Task) {
 		if (selectedTask != undefined && selectedTask.uuid != undefined) {
@@ -77,13 +62,10 @@
 	}
 
 	function updateRowClass(task: Task) {
-		if (task.status === 'completed' || task.status === 'deleted' || task.status === 'recurring')
-			return 'hover';
-		if (isTaskBlocked(task))
-			return 'hover text-neutral-content [&>*]:bg-neutral hover:text-base-content';
+		if (task.status === 'completed' || task.status === 'deleted' || task.status === 'recurring') return 'hover';
+		if (isTaskBlocked(task)) return 'hover text-neutral-content [&>*]:bg-neutral hover:text-base-content';
 		// @ts-ignore
-		if (new Date(convertTaskwarriorDateToISO8601Format(task.due)) <= new Date())
-			return 'hover text-error-content [&>*]:bg-error hover:text-base-content';
+		if (new Date(convertTaskwarriorDateToISO8601Format(task.due)) <= new Date()) return 'hover text-error-content [&>*]:bg-error hover:text-base-content';
 		if (
 			// @ts-ignore
 			new Date(convertTaskwarriorDateToISO8601Format(task.due)) - new Date() <=
@@ -102,11 +84,15 @@
 		const priorityToScore = { '': 0, L: 1, M: 2, H: 3, undefined: 0 };
 
 		let sortedTasks = tasks.sort((a, b) => {
+			// @ts-ignore
 			let varA = a[field];
+			// @ts-ignore
 			let varB = b[field];
 
 			if (field === 'priority') {
+				// @ts-ignore
 				varA = priorityToScore[varA];
+				// @ts-ignore
 				varB = priorityToScore[varB];
 			}
 
@@ -181,7 +167,8 @@
 		</thead>
 		<tbody>
 			{#each tasksList as task}
-				<tr class={updateRowClass(task)} id={task.uuid} on:click={() => selectTask(task)}>
+				<!-- <tr class={updateRowClass(task)} id={task.uuid} on:click={() => selectTask(task)}> -->
+				<tr class={updateRowClass(task)} id={task.uuid}>
 					<td>
 						{#if $taskFilter != 'recurring'}
 							<div class="flex flex-row">
