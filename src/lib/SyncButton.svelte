@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 	import { getNotificationsContext } from 'svelte-notifications';
 	import { enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
+	import { invalidate } from '$app/navigation';
 	import { IconRefresh } from '@tabler/icons-svelte';
 
 	const { addNotification } = getNotificationsContext();
@@ -10,22 +10,21 @@
 <form
 	method="post"
 	action="?/sync"
-	use:enhance={({ form, data, action, cancel }) => {
-		return async ({ result, update }) => {
+	use:enhance={() => {
+		return async ({ result }) => {
 			addNotification({
-				// @ts-ignore
 				description: result.data.message,
-				// @ts-ignore
 				type: result.data.type,
 				heading: 'Sync status',
 				position: 'bottom-center',
 				removeAfter: 10 * 1000
 			});
-			await invalidateAll();
+
+			await invalidate('taskwarrior:data');
 		};
 	}}
 >
 	<button type="submit" class="btn-secondary btn w-28">
-		<IconRefresh class="mx-1" />sync
+		<IconRefresh class="mr-1" />sync
 	</button>
 </form>
