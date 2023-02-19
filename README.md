@@ -32,8 +32,12 @@ At one point in time these should be converted into feature requests ...
 
 Taskguardian is bundled as Docker container. To run you can pull the docker image using (replace latest with vx.x.x to get a specific version):
 
-`docker pull watcher1987/taskguardian:latest`
+```
+docker pull watcher1987/taskguardian:latest
+```
 
 Then run with the following command:
 
-`docker run -d -p 8080:80 --name taskguardian -v $HOME/.taskrc:/.taskrc -v $HOME/.task:/.task watcher1987/taskguardian:latest`
+```
+docker run -d -p 8080:80 --name taskguardian -v $HOME/.taskrc:/.taskrc -v $HOME/.task:/.task watcher1987/taskguardian:latest
+```
