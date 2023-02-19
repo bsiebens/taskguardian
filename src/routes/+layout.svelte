@@ -70,7 +70,7 @@
 <footer class="footer footer-center bg-base-300 p-4 text-base-content">
 	<div>
 		<p>
-			created by bernard siebens <a href="https://github.com/bsiebens/taskguardian" class="hover:text-secondary">
+			created by bernard siebens - V0.1.0 - <a href="https://github.com/bsiebens/taskguardian" class="hover:text-secondary">
 				<i class="fa-brands fa-github ml-2" />
 			</a>
 		</p>
