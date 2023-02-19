@@ -6,6 +6,9 @@ import type { Actions, PageServerLoad } from "./$types";
 
 const taskwarrior = new TaskwarriorLib(env.TASKRC_PATH, env.TASKDIR_PATH);
 
+console.log(env.TASKRC_PATH);
+console.log(env.TASKDIR_PATH);
+
 export const load = (async ({ depends }) => {
     depends('taskwarrior:data');
 

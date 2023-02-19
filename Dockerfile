@@ -13,11 +13,12 @@ ENV TASKRC_PATH='/.taskrc'
 ENV TASKDIR_PATH='/.task'
 
 # Build node application
-RUN cd /src/taskguardian && npm install \
+RUN cd /src/taskguardian \
+    && npm install \
     && npm run build
 
 # Expose port 80
 EXPOSE 80
-VOLUME ["/.task", "./taskrc"]
+VOLUME ["/.task", "/.taskrc"]
 
 CMD ["/run.sh"]
