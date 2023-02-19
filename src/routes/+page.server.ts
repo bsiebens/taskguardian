@@ -4,9 +4,6 @@ import { env } from '$env/dynamic/private';
 import type { Task, TaskAnnotation } from "taskwarrior-lib";
 import type { Actions, PageServerLoad } from "./$types";
 
-console.log(env.TASKRC_PATH);
-console.log(env.TASKDIR_PATH);
-
 const taskwarrior = new TaskwarriorLib(env.TASKRC_PATH, env.TASKDIR_PATH);
 
 export const load = (async ({ depends }) => {
