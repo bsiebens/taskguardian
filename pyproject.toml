@@ -10,6 +10,7 @@ readme = "README.md"
 python = "^3.11"
 django = "^4.1.7"
 tasklib = "^2.5.1"
+django-environ = "^0.9.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1.0"
