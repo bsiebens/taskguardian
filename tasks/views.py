@@ -7,4 +7,11 @@ TASKWARRIOR = TaskWarrior()
 def index(request):
     tasks = TASKWARRIOR.tasks.all()
 
+    print(request.headers)
+    print(request.htmx)
+    if request.htmx:
+        print("true")
+    else:
+        print("false")
+
     return render(request, "tasks/index.html", {"tasks": tasks})

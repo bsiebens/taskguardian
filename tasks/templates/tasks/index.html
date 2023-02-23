@@ -1,3 +1,10 @@
-{% for task in tasks %}
-    {{ task.status }} - {{ task.urgency }} - {{ task }} <br />
-{% endfor %}
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="text-3xl pb-2">Tasks</h1>
+    
+    <ul class="ml-2 list-disc list-inside">
+        {% for task in tasks %}
+            <li>{{ task.description }} // {{ task.urgency }} ({{ task.status }})</li>
+        {% endfor %}
+{% endblock content %}

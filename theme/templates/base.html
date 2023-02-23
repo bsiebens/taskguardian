@@ -1,0 +1,25 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <title>Django Tailwind</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		{% tailwind_css %}
+	</head>
+
+	<body class="bg-gray-50 font-serif leading-normal tracking-normal">
+		<div class="container mx-auto">
+			<section class="flex items-center justify-center h-screen">
+				<div class="bg-green-600 p-4 rounded-2xl">
+					<h1 class="text-5xl text-white">Django + Tailwind = <span class="animate-pulse">❤️</span></h1>
+				</div>
+			</section>
+
+			<div class="bg-blue-200 p-4 rounded-2xl">
+				{% block content %} {% endblock content %}
+			</div>
+		</div>
+	</body>
+</html>
