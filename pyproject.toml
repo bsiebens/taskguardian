@@ -11,6 +11,9 @@ python = "^3.11"
 django = "^4.1.7"
 tasklib = "^2.5.1"
 django-environ = "^0.9.0"
+djangorestframework = "^3.14.0"
+markdown = "^3.4.1"
+django-filter = "^22.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1.0"
