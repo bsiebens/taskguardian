@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/svelte';
+import '../src/app.postcss';
 
 const preview: Preview = {
 	parameters: {
@@ -14,5 +15,14 @@ const preview: Preview = {
 		}
 	}
 };
+
+export const globalTypes = {
+	themes: {
+		defaultValue: [
+			"light",
+			"dark"
+		]
+	}
+}
 
 export default preview;

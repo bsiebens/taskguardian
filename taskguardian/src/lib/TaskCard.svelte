@@ -4,7 +4,8 @@
 	export let task: Task;
 </script>
 
-{task.uuid}
+{task.description}
+<div class="badge badge-primary">primary</div>
 
 {@html `<pre>
 (alias) type Task = {
