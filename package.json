@@ -35,7 +35,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@tabler/icons-svelte": "^2.3.0",
+		"@tabler/icons-svelte": "^2.16.0",
 		"daisyui": "^2.50.2",
 		"moment": "^2.29.4",
 		"svelte-notifications": "^0.9.98",
