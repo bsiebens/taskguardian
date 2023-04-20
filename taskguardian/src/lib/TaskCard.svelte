@@ -1,21 +1,10 @@
 <script lang="ts">
 	import { IconAlertCircle, IconAlertTriangle, IconArrowBackUp, IconCheck, IconCheckbox, IconDeviceFloppy, IconReload, IconTrash, IconTrashOff } from '@tabler/icons-svelte';
 	import type { Task } from 'taskwarrior-lib';
-	import { convertTaskwarriorDateToISO8601Format } from './dateutils';
+	import { convertTaskwarriorDateToISO8601Format, taskDueStatus } from './dateutils';
 
 	export let task: Task;
 	let recurring = (task.recur === undefined || task.recur === '') ? false : true;
-
-	function taskDueStatus() {
-		if (task.status === 'completed' || task.status === 'deleted') return null;
-
-		let dueDate = new Date(convertTaskwarriorDateToISO8601Format(task.due));
-		if (dueDate < new Date()) return 'overdue';
-		//@ts-ignore
-		if (dueDate - new Date() <= 24 * 60 * 60 * 1000) return 'neardue';
-
-		return null;
-	}
 </script>
 
 <div class="card bg-base-100 shadow-xl">
@@ -47,11 +36,11 @@
 				<div class="badge badge-info">
 					<IconReload class="w-4 h-4 mr-1" />recurring
 				</div>
-			{:else if taskDueStatus() === 'overdue'}
+			{:else if taskDueStatus(task) === 'overdue'}
 				<div class="badge badge-error">
 					<IconAlertCircle class="w-4 h-4 mr-1" />overdue
 				</div>
-			{:else if taskDueStatus() === 'neardue'}
+			{:else if taskDueStatus(task) === 'neardue'}
 				<div class="badge badge-warning">
 					<IconAlertTriangle class="w-4 h-4 mr-1" />near due
 				</div>

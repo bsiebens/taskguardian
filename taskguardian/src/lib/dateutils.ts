@@ -1,3 +1,5 @@
+import type { Task } from "taskwarrior-lib"
+
 function isISO8601(input_string: string) {
     const iso8601Regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$/
 
@@ -21,4 +23,15 @@ export function convertTaskwarriorDateToISO8601Format(input_string: string | und
     const timezone = input_string.slice(15)
 
     return `${year}-${month}-${day}T${hour}:${minute}:${second}${timezone}`
+}
+
+export function taskDueStatus(task: Task) {
+    if (task.status === 'completed' || task.status === 'deleted') return null;
+
+    let dueDate = new Date(convertTaskwarriorDateToISO8601Format(task.due));
+    if (dueDate < new Date()) return 'overdue';
+    //@ts-ignore
+    if (dueDate - new Date() <= 24 * 60 * 60 * 1000) return 'neardue';
+
+    return null;
 }
