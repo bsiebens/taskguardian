@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { IconMessage, IconPlayerPlay, IconAlertCircle, IconAlertTriangle, IconCheckbox, IconTrash, IconTrashOff, IconCheck, IconArrowBackUp, IconReload, IconDisc } from '@tabler/icons-svelte';
-	import moment from 'moment';
+	import { IconAlertCircle, IconAlertTriangle, IconArrowBackUp, IconCheck, IconCheckbox, IconDeviceFloppy, IconReload, IconTrash, IconTrashOff } from '@tabler/icons-svelte';
 	import type { Task } from 'taskwarrior-lib';
 	import { convertTaskwarriorDateToISO8601Format } from './dateutils';
 
 	export let task: Task;
+	let recurring = (task.recur === undefined || task.recur === '') ? false : true;
 
 	function taskDueStatus() {
 		if (task.status === 'completed' || task.status === 'deleted') return null;
@@ -16,9 +16,6 @@
 
 		return null;
 	}
-
-	$: dueStatus = taskDueStatus();
-	$: recurring = true;
 </script>
 
 <div class="card bg-base-100 shadow-xl">
@@ -50,11 +47,11 @@
 				<div class="badge badge-info">
 					<IconReload class="w-4 h-4 mr-1" />recurring
 				</div>
-			{:else if dueStatus === 'overdue'}
+			{:else if taskDueStatus() === 'overdue'}
 				<div class="badge badge-error">
 					<IconAlertCircle class="w-4 h-4 mr-1" />overdue
 				</div>
-			{:else if dueStatus === 'neardue'}
+			{:else if taskDueStatus() === 'neardue'}
 				<div class="badge badge-warning">
 					<IconAlertTriangle class="w-4 h-4 mr-1" />near due
 				</div>
@@ -119,7 +116,7 @@
 			<div class="grid grid-cols-8 items-center gap-2 pb-4">
 				<div class="form-control w-full">
 					<label for="recurrence" class="label cursor-pointer justify-start">
-						<input type="checkbox" name="recurrence" class="toggle" checked={task.recur === undefined || task.recur === '' ? false : true} />
+						<input type="checkbox" name="recurrence" class="toggle" bind:checked={recurring} />
 					</label>
 				</div>
 
@@ -173,112 +170,10 @@
 			{:else if task.status === 'deleted'}
 				<a href="" class="btn btn-sm btn-info gap-2"><IconTrashOff class="w-4 h-4" />Restore</a>
 			{:else}
-				<a href="" class="btn btn-sm btn-primary gap-2"><IconDisc class="w-4 h-4" />Save</a>
+				<a href="" class="btn btn-sm btn-primary gap-2"><IconDeviceFloppy class="w-4 h-4" />Save</a>O
 				<a href="" class="btn btn-sm btn-success gap-2"><IconCheck class="w-4 h-4" />Complete</a>
 				<a href="" class="btn btn-sm btn-error gap-2"><IconTrash class="w-4 h-4" />Delete</a>
 			{/if}
 		</div>
 	</div>
 </div>
-
-<!-- <div class={rowClass()}>
-		<div class="col-span-6">
-			<div class="flex flex-row gap-2 items-center">
-				{#if taskOverDue()}
-					<IconAlertCircle />
-				{:else if taskAlmostOverDue()}
-					<IconAlertTriangle />
-				{/if}
-
-				{#if task.status === 'completed'}
-					<IconCheckbox class="text-success" />
-				{:else if task.status === 'deleted'}
-					<IconTrash class="text-error" />
-				{/if}
-
-				{#if task.status === 'pending'}
-					{#if (task.tags && task.tags.length > 0) || task.scheduled || (task.annotations && task.annotations.length > 0)}
-						<div class="flex flex-col gap-1 grow">
-							<div class="font-semibold">{task.description}</div>
-
-							<div class="flex flex-row gap-1">
-								{#if task.tags && task.tags.length > 0}
-									{#each task.tags as tag}
-										<div class="badge badge-primary">{tag}</div>
-									{/each}
-								{/if}
-
-								{#if task.scheduled}
-									<div class="badge badge-secondary gap-1">
-										<IconPlayerPlay class="w-4 h-4" />
-										{moment(convertTaskwarriorDateToISO8601Format(task.scheduled)).fromNow()}
-									</div>
-								{/if}
-
-								{#if task.annotations && task.annotations.length > 0}
-									<div class="badge badge-accent gap-1">
-										<IconMessage class="w-4 h-4" />
-										notes
-									</div>
-								{/if}
-							</div>
-						</div>
-					{:else}
-						<div class="font-semibold">{task.description}</div>
-					{/if}
-				{:else}
-					<div class="font-semibold grow">{task.description}</div>
-				{/if}
-			</div>
-		</div>
-
-		<div>
-			{#if task.due}
-				{moment(convertTaskwarriorDateToISO8601Format(task.due)).fromNow()}
-			{/if}
-		</div>
-
-		<div class="col-span-2">
-			{#if task.project}
-				<div class="breadcrumbs py-0">
-					<ul>
-						{#each task.project.split('.') as project}
-							<li>{project}</li>
-						{/each}
-					</ul>
-				</div>
-			{/if}
-		</div>
-
-		<div class="mx-auto">
-			{#if task.priority === 'L'}
-				<div class="badge badge-success">low</div>
-			{:else if task.priority === 'M'}
-				<div class="badge badge-warning">medium</div>
-			{:else if task.priority === 'H'}
-				<div class="badge badge-error">high</div>
-			{:else}
-				<div class="badge badge-info">none</div>
-			{/if}
-		</div>
-
-		<div>
-			{task.urgency}
-		</div>
-
-		<div>
-			{#if task.status === 'completed'}
-				<a href=""><IconEye class="w-4 h-4 mr-2" />View</a>
-				<a href=""><IconEye class="w-4 h-4 mr-2" />Restore</a>
-				<a href=""><IconEye class="w-4 h-4 mr-2" />Delete</a>
-			{:else if task.status === 'deleted'}
-				<a href=""><IconEye class="w-4 h-4 mr-2" />View</a>
-				<a href=""><IconEye class="w-4 h-4 mr-2" />Restore</a>
-			{:else}
-				<a href=""><IconEye class="w-4 h-4 mr-2" />View</a>
-				<a href=""><IconEye class="w-4 h-4 mr-2" />Complete</a>
-				<a href=""><IconEye class="w-4 h-4 mr-2" />Delete</a>
-			{/if}
-		</div>
-	</div>
- -->
