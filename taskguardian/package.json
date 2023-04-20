@@ -38,9 +38,12 @@
 	"dependencies": {
 		"@popperjs/core": "^2.11.6",
 		"@storybook/addon-postcss": "^2.0.0",
+		"@tabler/icons-svelte": "^2.11.0",
 		"classnames": "^2.3.2",
 		"daisyui": "^2.51.3",
+		"moment": "^2.29.4",
 		"prettier-plugin-svelte": "^2.9.0",
-		"taskwarrior-lib": "^0.5.2"
+		"taskwarrior-lib": "^0.5.2",
+		"theme-change": "^2.5.0"
 	}
 }
