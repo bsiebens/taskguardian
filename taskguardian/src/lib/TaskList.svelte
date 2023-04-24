@@ -6,15 +6,32 @@
 
     export let tasks: Task[];
     export let listDisplay = "default";
+    export let activeTask = "";
 
     function rowClass(task) {
+        let baseRowClass = "hover";
+
         if (taskDueStatus(task) === "overdue") {
-            return "hover text-error-content [&>*]:bg-error hover:text-error";
+            if (task.uuid === activeTask) {
+                return baseRowClass + " text-error [&>*]:bg-error";
+            } else {
+                return baseRowClass + " text-error-content [&>*]:bg-error hover:text-error";
+            }
         } else if (taskDueStatus(task) === "neardue") {
-            return "hover text-warning-content [&>*]:bg-warning hover:text-warning";
+            if (task.uuid === activeTask) {
+                return baseRowClass + " text-warning [&>*]:bg-warning";
+            } else {
+                return baseRowClass + " text-warning-content [&>*]:bg-warning hover:text-warning";
+            }
+        } else {
+            if (task.uuid === activeTask) {
+                return baseRowClass + " active";
+            } else {
+                return baseRowClass;
+            }
         }
 
-        return "hover";
+        return baseRowClass;
     }
 </script>
 
