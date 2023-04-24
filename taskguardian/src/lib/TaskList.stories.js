@@ -102,24 +102,85 @@ Default.args = {
 export const Later = Template.bind({});
 Later.args = {
     ...Default.args,
-    listDisplay: "later"
+    listDisplay: "later",
+    tasks: [
+        ...Default.args.tasks,
+        {
+            id: 14,
+            description: "Wegdoen oude boekenkasten",
+            due: (new Date(Date.now() + (40 * 60 * 60 * 1000) - tzoffset)).toISOString(),
+            entry: "20230129T162841Z",
+            modified: "20230217T131432Z",
+            wait: (new Date(Date.now() + (20 * 60 * 60 * 1000) - tzoffset)).toISOString(),
+            priority: "H",
+            project: "huis.bureau",
+            status: "pending",
+            uuid: "91eec140-c2e6-4005-8ed8-a59bb011fbc7",
+            urgency: 24.6411
+        }
+    ],
 };
 
 export const Recurring = Template.bind({});
 Recurring.args = {
     ...Default.args,
-    listDisplay: "recurring"
+    listDisplay: "recurring",
+    tasks: [
+        ...Default.args.tasks,
+        {
+            id: 14,
+            description: "Wegdoen oude boekenkasten",
+            due: dueDate,
+            entry: "20230129T162841Z",
+            modified: "20230217T131432Z",
+            priority: "H",
+            project: "huis.bureau",
+            status: "recurring",
+            uuid: "91eec140-c2e6-4005-8ed8-a59bb011fbc7",
+            urgency: 24.6411
+        }
+    ],
 };
 
 export const Deleted = Template.bind({});
 Deleted.args = {
     ...Default.args,
+    tasks: [
+        ...Default.args.tasks,
+        {
+            id: 14,
+            description: "Wegdoen oude boekenkasten",
+            due: dueDate,
+            entry: "20230129T162841Z",
+            modified: "20230217T131432Z",
+            priority: "H",
+            project: "huis.bureau",
+            status: "deleted",
+            uuid: "91eec140-c2e6-4005-8ed8-a59bb011fbc7",
+            urgency: 24.6411
+        }
+    ],
     listDisplay: "deleted"
 };
 
 export const Completed = Template.bind({});
 Completed.args = {
     ...Default.args,
+    tasks: [
+        ...Default.args.tasks,
+        {
+            id: 14,
+            description: "Wegdoen oude boekenkasten",
+            due: dueDate,
+            entry: "20230129T162841Z",
+            modified: "20230217T131432Z",
+            priority: "H",
+            project: "huis.bureau",
+            status: "completed",
+            uuid: "91eec140-c2e6-4005-8ed8-a59bb011fbc7",
+            urgency: 24.6411
+        }
+    ],
     listDisplay: "completed"
 };
 
