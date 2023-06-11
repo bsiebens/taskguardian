@@ -25,10 +25,14 @@ class Task(models.Model):
     name = models.CharField(max_length=250)
     description = models.TextField(null=True, blank=True)
 
-    priority = models.CharField(max_length=6, choices=PriorityChoices.choices, default=PriorityChoices.NONE)
+    priority = models.CharField(
+        max_length=6, choices=PriorityChoices.choices, default=PriorityChoices.NONE
+    )
     due = models.DateTimeField(blank=True, null=True)
 
-    project = models.ForeignKey(Project, blank=True, null=True, on_delete=models.SET_NULL)
+    project = models.ForeignKey(
+        Project, blank=True, null=True, on_delete=models.SET_NULL
+    )
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -48,13 +52,16 @@ class Task(models.Model):
             due_date_difference_seconds = (
                 due_date_difference.days * SECONDS_PER_DAY + due_date_difference.seconds
                 if due_date_difference.days >= 0
-                else due_date_difference.days * SECONDS_PER_DAY - due_date_difference.seconds
+                else due_date_difference.days * SECONDS_PER_DAY
+                - due_date_difference.seconds
             )
 
             if due_date_difference_seconds / SECONDS_PER_DAY >= 7:
                 value += 1.0
             elif due_date_difference_seconds / SECONDS_PER_DAY >= -14:
-                value += (due_date_difference_seconds / SECONDS_PER_DAY * 0.8 / 21.0) + 0.2
+                value += (
+                    due_date_difference_seconds / SECONDS_PER_DAY * 0.8 / 21.0
+                ) + 0.2
             else:
                 value += 0.2
 

@@ -8,10 +8,15 @@ router = Router()
 
 class ProjectSchema(ModelSchema):
     parent: "ProjectSchema" = None
+    full_name: str
 
     class Config:
         model = Project
         model_fields = ["id", "name", "created", "modified"]
+
+    @staticmethod
+    def resolve_full_name(obj):
+        return " - ".join([node.name for node in obj.ancestors(include_self=True)])
 
 
 ProjectSchema.update_forward_refs()
