@@ -15,6 +15,7 @@ djangorestframework = "^3.14.0"
 markdown = "^3.4.1"
 django-filter = "^22.1"
 django-tree-queries = "^0.14.0"
+django-ninja = "^0.22.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1.0"
