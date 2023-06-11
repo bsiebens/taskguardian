@@ -1,29 +1,22 @@
-from ninja import Router, Schema
+from ninja import Router, ModelSchema
+from typing import List
 
 from .models import Project, Task
 
 router = Router()
 
 
-@router.get("/")
-def hello(request, name):
-    return f"Hello {name}"
+class ProjectSchema(ModelSchema):
+    parent: "ProjectSchema" = None
+
+    class Config:
+        model = Project
+        model_fields = ["id", "name", "created", "modified"]
 
 
-class UserSchema(Schema):
-    username: str
-    email: str
-    first_name: str
-    last_name: str
+ProjectSchema.update_forward_refs()
 
 
-class Error(Schema):
-    message: str
-
-
-@router.get("/me", response={200: UserSchema, 403: Error})
-def me(request):
-    if not request.user.is_authenticated:
-        return 403, {"message": "Please sign in first"}
-
-    return request.user
+@router.get("/projects", response=List[ProjectSchema])
+def list_projects(request):
+    return Project.objects.with_tree_fields()
