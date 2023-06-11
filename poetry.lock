@@ -91,6 +91,17 @@ python-versions = ">=3.7"
 Django = ">=3.2"
 
 [[package]]
+name = "django-tree-queries"
+version = "0.14.0"
+description = "Tree queries with explicit opt-in, without configurability"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+tests = ["coverage"]
+
+[[package]]
 name = "djangorestframework"
 version = "3.14.0"
 description = "Web APIs for Django, made easy."
@@ -189,7 +200,7 @@ python-versions = ">=2"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.11"
-content-hash = "f2cf8ec2131873f688aa23ba336dcf4055612a45bc872dc9ef396f88b627eb7f"
+content-hash = "e3bd781faefe006751732b933b19c6b37e394a03f60bef483844787a654b9aaf"
 
 [metadata.files]
 asgiref = [
@@ -242,6 +253,10 @@ django-environ = [
 django-filter = [
     {file = "django-filter-22.1.tar.gz", hash = "sha256:ed473b76e84f7e83b2511bb2050c3efb36d135207d0128dfe3ae4b36e3594ba5"},
     {file = "django_filter-22.1-py3-none-any.whl", hash = "sha256:ed429e34760127e3520a67f415bec4c905d4649fbe45d0d6da37e6ff5e0287eb"},
+]
+django-tree-queries = [
+    {file = "django_tree_queries-0.14.0-py3-none-any.whl", hash = "sha256:424ef445b2129762b567304186338b912ec90fe371dd5c92915093c6db063598"},
+    {file = "django_tree_queries-0.14.0.tar.gz", hash = "sha256:8f83d6ef2d3871dbff7a9d9c68167dbe561565d99f4d41fae97676ae160360c5"},
 ]
 djangorestframework = [
     {file = "djangorestframework-3.14.0-py3-none-any.whl", hash = "sha256:eb63f58c9f218e1a7d064d17a70751f528ed4e1d35547fdade9aaf4cd103fd08"},
