@@ -87,6 +87,17 @@ files = [
 ]
 
 [[package]]
+name = "contextlib2"
+version = "21.6.0"
+description = "Backports and enhancements for the contextlib module"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "contextlib2-21.6.0-py2.py3-none-any.whl", hash = "sha256:3fbdb64466afd23abaf6c977627b75b6139a5a3e8ce38405c5b413aed7a0471f"},
+    {file = "contextlib2-21.6.0.tar.gz", hash = "sha256:ab1e2bfe1d01d968e1b7e8d9023bc51ef3509bba217bb730cee3827e1ee82869"},
+]
+
+[[package]]
 name = "django"
 version = "4.2.2"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
@@ -157,6 +168,29 @@ doc = ["markdown-include", "mkdocs", "mkdocs-material", "mkdocstrings"]
 test = ["black", "django-stubs", "flake8", "isort", "mypy (==0.931)", "psycopg2-binary", "pytest", "pytest-asyncio", "pytest-cov", "pytest-django"]
 
 [[package]]
+name = "django-ninja-extra"
+version = "0.19.0"
+description = "Django Ninja Extra - Class Based Utility and more for Django Ninja(Fast Django REST framework)"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "django_ninja_extra-0.19.0-py3-none-any.whl", hash = "sha256:4e3ba9f79d69802f5222864e5d3f032018055e6c5c90bd9363fb683aac913c0b"},
+    {file = "django_ninja_extra-0.19.0.tar.gz", hash = "sha256:4b4005ac9bceed6779b32e0576e628f22d355ca9a93f2d214589340c0d003176"},
+]
+
+[package.dependencies]
+asgiref = "*"
+contextlib2 = "*"
+Django = ">=2.2"
+django-ninja = "0.22.2"
+injector = ">=0.19.0"
+
+[package.extras]
+dev = ["pre-commit"]
+doc = ["markdown-include", "mdx-include (>=1.4.1,<2.0.0)", "mkdocs (>=1.1.2,<2.0.0)", "mkdocs-markdownextradata-plugin (>=0.1.7,<0.3.0)", "mkdocs-material (>=7.1.9,<8.0.0)", "mkdocstrings"]
+test = ["black (==22.12.0)", "django-stubs", "flake8 (>=3.8.3,<4.0.0)", "injector (>=0.19.0)", "isort (>=5.0.6,<6.0.0)", "mypy (==0.971)", "pytest", "pytest-asyncio", "pytest-cov", "pytest-django"]
+
+[[package]]
 name = "django-tree-queries"
 version = "0.14.0"
 description = "Tree queries with explicit opt-in, without configurability"
@@ -184,6 +218,20 @@ files = [
 [package.dependencies]
 django = ">=3.0"
 pytz = "*"
+
+[[package]]
+name = "injector"
+version = "0.20.1"
+description = "Injector - Python dependency injection framework, inspired by Guice"
+optional = false
+python-versions = "*"
+files = [
+    {file = "injector-0.20.1-py2.py3-none-any.whl", hash = "sha256:f8fc5994176a8cf6b0455a8d1558c588733474ef17795553464e7e9d2f94eaf5"},
+    {file = "injector-0.20.1.tar.gz", hash = "sha256:8661b49a2f8309ce61e3a6a82b7acb5e225c4bde8e17d1610c893a670dff223a"},
+]
+
+[package.extras]
+dev = ["black", "check-manifest", "dataclasses", "mypy", "pytest", "pytest-cov (>=2.5.1)"]
 
 [[package]]
 name = "markdown"
@@ -361,4 +409,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "5ce2a9d207a67aedd5bdc57bfa265f413a9f15a6a4a16b324598021834d618da"
+content-hash = "6093327acec403a7584b0451fb1fc9f667f9054a03ea1c96e599d272299204a3"
