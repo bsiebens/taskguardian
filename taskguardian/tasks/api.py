@@ -1,6 +1,7 @@
 from ninja_extra import api_controller, route
-from ninja.constants import NOT_SET
-from ninja import ModelSchema
+from ninja.responses import codes_4xx
+from django.shortcuts import get_object_or_404
+from ninja import ModelSchema, Schema
 import typing
 from .models import Project
 
@@ -10,19 +11,30 @@ class ProjectSchema(ModelSchema):
 
     class Config:
         model = Project
-        model_fields = ["id", "name", "created", "modified"]
+        model_fields = ["id", "name", "parent", "created", "modified"]
 
     @staticmethod
     def resolve_path(obj):
         return [node.name for node in obj.ancestors(include_self=True)]
 
 
+class DetailMessage(Schema):
+    detail: str
+
+
 @api_controller("/projects", tags=["Projects"])
-class TasksAPI:
+class ProjectsAPI:
     @route.get("", response={200: typing.List[ProjectSchema]})
     def list_projects(self):
-        """Returns a list of all projects. The path argument contains the tree for generating the full project path."""
         return Project.objects.with_tree_fields()
+
+    @route.get("{project_id}", response={200: ProjectSchema, 404: DetailMessage})
+    def list_project(self, project_id: int):
+        return get_object_or_404(Project, pk=project_id)
+
+    @route.get("{project_id}/children", response={200: typing.List[ProjectSchema]})
+    def list_project_children(self, project_id: int):
+        return Project.objects.get(pk=project_id).descendants()
 
 
 """ from ninja import Router, ModelSchema
