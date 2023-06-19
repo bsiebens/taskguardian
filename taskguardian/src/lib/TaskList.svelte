@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { IconList, IconChevronRight, IconAlertTriangle, IconAlertCircle, IconCheckbox, IconTrash, IconRepeat, IconPlayerPlay, IconPlayerPlayFilled } from "@tabler/icons-svelte";
+    import { IconList, IconChevronRight, IconAlertTriangle, IconAlertCircle, IconCheckbox, IconTrash, IconReload, IconPlayerPlay, IconPlayerPlayFilled } from "@tabler/icons-svelte";
     import type { Task } from "taskwarrior-lib";
     import moment from "moment";
     import { convertTaskwarriorDateToISO8601Format, taskDueStatus } from "./dateutils";
@@ -9,19 +9,19 @@
     export let activeTask = "";
 
     function rowClass(task) {
-        let baseRowClass = "hover";
+        let baseRowClass = "border-b-1 border-base-300 hover:bg-base-300 hover:text-base-content";
 
         if (taskDueStatus(task) === "overdue") {
             if (task.uuid === activeTask) {
-                return baseRowClass + " text-error [&>*]:bg-error";
+                return baseRowClass + " text-error bg-error";
             } else {
-                return baseRowClass + " text-error-content [&>*]:bg-error hover:text-error";
+                return baseRowClass + " text-error-content bg-error";
             }
         } else if (taskDueStatus(task) === "neardue") {
             if (task.uuid === activeTask) {
-                return baseRowClass + " text-warning [&>*]:bg-warning";
+                return baseRowClass + " text-warning bg-warning";
             } else {
-                return baseRowClass + " text-warning-content [&>*]:bg-warning hover:text-warning";
+                return baseRowClass + " text-warning-content bg-warning";
             }
         } else {
             if (task.uuid === activeTask) {
@@ -36,9 +36,9 @@
 </script>
 
 
-<table class="table table-compact w-full">
+<table class="table">
     <thead>
-        <tr>
+        <tr class="border-b-2 border-accent">
             <th></th>
             <th>ID</th>
             <th>Priority</th>
@@ -61,7 +61,7 @@
                             <IconTrash class="text-error" />
                         {:else}
                             {#if task.status === "recurring"}
-                                <IconRepeat class="text-info" />
+                                <IconReload />
                             {/if}
 
                             {#if taskDueStatus(task) === 'overdue'}

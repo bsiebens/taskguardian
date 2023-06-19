@@ -157,6 +157,8 @@
 				</div>
 			</div>
 
+			<h2>Annotations</h2>
+
 			<div class="card-actions justify-end mt-4">
 				{#if task.status === 'completed'}
 					<a href="" class="btn btn-sm btn-info gap-2"><IconArrowBackUp class="w-4 h-4" />Restore</a>
